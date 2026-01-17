@@ -1,0 +1,2826 @@
+==================================================
+STRUKTUR FOLDER (DAFTAR FILE)
+==================================================
+mini-quiz-ambis/.gitignore
+mini-quiz-ambis/eslint.config.mjs
+mini-quiz-ambis/next-env.d.ts
+mini-quiz-ambis/next.config.ts
+mini-quiz-ambis/package.json
+mini-quiz-ambis/postcss.config.mjs
+mini-quiz-ambis/public/file.svg
+mini-quiz-ambis/public/globe.svg
+mini-quiz-ambis/public/next.svg
+mini-quiz-ambis/public/vercel.svg
+mini-quiz-ambis/public/window.svg
+mini-quiz-ambis/src/app/(auth)/layout.tsx
+mini-quiz-ambis/src/app/(auth)/login/page.tsx
+mini-quiz-ambis/src/app/(auth)/register/page.tsx
+mini-quiz-ambis/src/app/(auth)/verify/page.tsx
+mini-quiz-ambis/src/app/(dashboard)/dashboard/page.tsx
+mini-quiz-ambis/src/app/(dashboard)/history/[id]/page.tsx
+mini-quiz-ambis/src/app/(dashboard)/history/page.tsx
+mini-quiz-ambis/src/app/(dashboard)/layout.tsx
+mini-quiz-ambis/src/app/(dashboard)/profile/page.tsx
+mini-quiz-ambis/src/app/(dashboard)/quiz/session/page.tsx
+mini-quiz-ambis/src/app/api/proxy/[...path]/route.ts
+mini-quiz-ambis/src/app/globals.css
+mini-quiz-ambis/src/app/layout.tsx
+mini-quiz-ambis/src/app/page.tsx
+mini-quiz-ambis/src/components/layout/Navbar.tsx
+mini-quiz-ambis/src/components/QueryProvider.tsx
+mini-quiz-ambis/src/components/ui/Button.tsx
+mini-quiz-ambis/src/components/ui/Input.tsx
+mini-quiz-ambis/src/features/auth/components/LoginForm.tsx
+mini-quiz-ambis/src/features/auth/components/RegisterForm.tsx
+mini-quiz-ambis/src/features/auth/components/VerifyForm.tsx
+mini-quiz-ambis/src/features/auth/hooks/useLogin.ts
+mini-quiz-ambis/src/features/auth/hooks/useRegister.ts
+mini-quiz-ambis/src/features/auth/hooks/useVerify.ts
+mini-quiz-ambis/src/features/auth/types/index.ts
+mini-quiz-ambis/src/features/history/components/HistoryDetail.tsx
+mini-quiz-ambis/src/features/history/components/HistoryList.tsx
+mini-quiz-ambis/src/features/history/hooks/useHistory.ts
+mini-quiz-ambis/src/features/history/types/index.ts
+mini-quiz-ambis/src/features/profile/components/ChangePasswordForm.tsx
+mini-quiz-ambis/src/features/profile/components/ProfileForm.tsx
+mini-quiz-ambis/src/features/profile/hooks/useProfile.ts
+mini-quiz-ambis/src/features/profile/types/index.ts
+mini-quiz-ambis/src/features/quiz/components/MobileNavigator.tsx
+mini-quiz-ambis/src/features/quiz/components/QuestionCard.tsx
+mini-quiz-ambis/src/features/quiz/components/QuestionNavigator.tsx
+mini-quiz-ambis/src/features/quiz/components/QuizFooter.tsx
+mini-quiz-ambis/src/features/quiz/components/QuizHeader.tsx
+mini-quiz-ambis/src/features/quiz/components/QuizTimer.tsx
+mini-quiz-ambis/src/features/quiz/components/SubmitModal.tsx
+mini-quiz-ambis/src/features/quiz/hooks/useQuiz.ts
+mini-quiz-ambis/src/features/quiz/store/quizStore.ts
+mini-quiz-ambis/src/features/quiz/types/index.ts
+mini-quiz-ambis/src/lib/axios.ts
+mini-quiz-ambis/src/lib/error-handler.ts
+mini-quiz-ambis/src/lib/utils.ts
+mini-quiz-ambis/src/types/api.ts
+mini-quiz-ambis/tsconfig.json
+
+
+==================================================
+ISI KODE
+==================================================
+
+--- START FILE: mini-quiz-ambis/.gitignore ---
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+--- END FILE: mini-quiz-ambis/.gitignore ---
+
+--- START FILE: mini-quiz-ambis/eslint.config.mjs ---
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
+
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTs,
+  // Override default ignores of eslint-config-next.
+  globalIgnores([
+    // Default ignores of eslint-config-next:
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+  ]),
+]);
+
+export default eslintConfig;
+
+--- END FILE: mini-quiz-ambis/eslint.config.mjs ---
+
+--- START FILE: mini-quiz-ambis/next-env.d.ts ---
+/// <reference types="next" />
+/// <reference types="next/image-types/global" />
+import "./.next/dev/types/routes.d.ts";
+
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/app/api-reference/config/typescript for more information.
+
+--- END FILE: mini-quiz-ambis/next-env.d.ts ---
+
+--- START FILE: mini-quiz-ambis/next.config.ts ---
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default nextConfig;
+
+--- END FILE: mini-quiz-ambis/next.config.ts ---
+
+--- START FILE: mini-quiz-ambis/package.json ---
+{
+  "name": "mini-quiz-ambis",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@tanstack/react-query": "^5.90.17",
+    "axios": "^1.13.2",
+    "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
+    "lucide-react": "^0.562.0",
+    "next": "16.1.2",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-hook-form": "^7.71.1",
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^3.4.0",
+    "zod": "^4.3.5",
+    "zustand": "^5.0.10"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.2",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
+
+--- END FILE: mini-quiz-ambis/package.json ---
+
+--- START FILE: mini-quiz-ambis/postcss.config.mjs ---
+const config = {
+  plugins: {
+    "@tailwindcss/postcss": {},
+  },
+};
+
+export default config;
+
+--- END FILE: mini-quiz-ambis/postcss.config.mjs ---
+
+--- START FILE: mini-quiz-ambis/public/file.svg ---
+<svg fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M14.5 13.5V5.41a1 1 0 0 0-.3-.7L9.8.29A1 1 0 0 0 9.08 0H1.5v13.5A2.5 2.5 0 0 0 4 16h8a2.5 2.5 0 0 0 2.5-2.5m-1.5 0v-7H8v-5H3v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1M9.5 5V2.12L12.38 5zM5.13 5h-.62v1.25h2.12V5zm-.62 3h7.12v1.25H4.5zm.62 3h-.62v1.25h7.12V11z" clip-rule="evenodd" fill="#666" fill-rule="evenodd"/></svg>
+--- END FILE: mini-quiz-ambis/public/file.svg ---
+
+--- START FILE: mini-quiz-ambis/public/globe.svg ---
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g clip-path="url(#a)"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.27 14.1a6.5 6.5 0 0 0 3.67-3.45q-1.24.21-2.7.34-.31 1.83-.97 3.1M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.48-1.52a7 7 0 0 1-.96 0H7.5a4 4 0 0 1-.84-1.32q-.38-.89-.63-2.08a40 40 0 0 0 3.92 0q-.25 1.2-.63 2.08a4 4 0 0 1-.84 1.31zm2.94-4.76q1.66-.15 2.95-.43a7 7 0 0 0 0-2.58q-1.3-.27-2.95-.43a18 18 0 0 1 0 3.44m-1.27-3.54a17 17 0 0 1 0 3.64 39 39 0 0 1-4.3 0 17 17 0 0 1 0-3.64 39 39 0 0 1 4.3 0m1.1-1.17q1.45.13 2.69.34a6.5 6.5 0 0 0-3.67-3.44q.65 1.26.98 3.1M8.48 1.5l.01.02q.41.37.84 1.31.38.89.63 2.08a40 40 0 0 0-3.92 0q.25-1.2.63-2.08a4 4 0 0 1 .85-1.32 7 7 0 0 1 .96 0m-2.75.4a6.5 6.5 0 0 0-3.67 3.44 29 29 0 0 1 2.7-.34q.31-1.83.97-3.1M4.58 6.28q-1.66.16-2.95.43a7 7 0 0 0 0 2.58q1.3.27 2.95.43a18 18 0 0 1 0-3.44m.17 4.71q-1.45-.12-2.69-.34a6.5 6.5 0 0 0 3.67 3.44q-.65-1.27-.98-3.1" fill="#666"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h16v16H0z"/></clipPath></defs></svg>
+--- END FILE: mini-quiz-ambis/public/globe.svg ---
+
+--- START FILE: mini-quiz-ambis/public/next.svg ---
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 394 80"><path fill="#000" d="M262 0h68.5v12.7h-27.2v66.6h-13.6V12.7H262V0ZM149 0v12.7H94v20.4h44.3v12.6H94v21h55v12.6H80.5V0h68.7zm34.3 0h-17.8l63.8 79.4h17.9l-32-39.7 32-39.6h-17.9l-23 28.6-23-28.6zm18.3 56.7-9-11-27.1 33.7h17.8l18.3-22.7z"/><path fill="#000" d="M81 79.3 17 0H0v79.3h13.6V17l50.2 62.3H81Zm252.6-.4c-1 0-1.8-.4-2.5-1s-1.1-1.6-1.1-2.6.3-1.8 1-2.5 1.6-1 2.6-1 1.8.3 2.5 1a3.4 3.4 0 0 1 .6 4.3 3.7 3.7 0 0 1-3 1.8zm23.2-33.5h6v23.3c0 2.1-.4 4-1.3 5.5a9.1 9.1 0 0 1-3.8 3.5c-1.6.8-3.5 1.3-5.7 1.3-2 0-3.7-.4-5.3-1s-2.8-1.8-3.7-3.2c-.9-1.3-1.4-3-1.4-5h6c.1.8.3 1.6.7 2.2s1 1.2 1.6 1.5c.7.4 1.5.5 2.4.5 1 0 1.8-.2 2.4-.6a4 4 0 0 0 1.6-1.8c.3-.8.5-1.8.5-3V45.5zm30.9 9.1a4.4 4.4 0 0 0-2-3.3 7.5 7.5 0 0 0-4.3-1.1c-1.3 0-2.4.2-3.3.5-.9.4-1.6 1-2 1.6a3.5 3.5 0 0 0-.3 4c.3.5.7.9 1.3 1.2l1.8 1 2 .5 3.2.8c1.3.3 2.5.7 3.7 1.2a13 13 0 0 1 3.2 1.8 8.1 8.1 0 0 1 3 6.5c0 2-.5 3.7-1.5 5.1a10 10 0 0 1-4.4 3.5c-1.8.8-4.1 1.2-6.8 1.2-2.6 0-4.9-.4-6.8-1.2-2-.8-3.4-2-4.5-3.5a10 10 0 0 1-1.7-5.6h6a5 5 0 0 0 3.5 4.6c1 .4 2.2.6 3.4.6 1.3 0 2.5-.2 3.5-.6 1-.4 1.8-1 2.4-1.7a4 4 0 0 0 .8-2.4c0-.9-.2-1.6-.7-2.2a11 11 0 0 0-2.1-1.4l-3.2-1-3.8-1c-2.8-.7-5-1.7-6.6-3.2a7.2 7.2 0 0 1-2.4-5.7 8 8 0 0 1 1.7-5 10 10 0 0 1 4.3-3.5c2-.8 4-1.2 6.4-1.2 2.3 0 4.4.4 6.2 1.2 1.8.8 3.2 2 4.3 3.4 1 1.4 1.5 3 1.5 5h-5.8z"/></svg>
+--- END FILE: mini-quiz-ambis/public/next.svg ---
+
+--- START FILE: mini-quiz-ambis/public/vercel.svg ---
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1155 1000"><path d="m577.3 0 577.4 1000H0z" fill="#fff"/></svg>
+--- END FILE: mini-quiz-ambis/public/vercel.svg ---
+
+--- START FILE: mini-quiz-ambis/public/window.svg ---
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 2.5h13v10a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1zM0 1h16v11.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 0 12.5zm3.75 4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5M7 4.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m1.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5" fill="#666"/></svg>
+--- END FILE: mini-quiz-ambis/public/window.svg ---
+
+--- START FILE: mini-quiz-ambis/src/app/(auth)/layout.tsx ---
+import { ReactNode } from 'react';
+import Link from 'next/link';
+import { Hexagon } from 'lucide-react';
+
+export default function AuthLayout({ children }: { children: ReactNode }) {
+    return (
+        <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 sm:p-6">
+            <div className="w-full max-w-md space-y-8 animate-in slide-in-from-bottom-4 fade-in duration-500">
+                <div className="text-center">
+                    <Link
+                        href="/"
+                        className="inline-flex items-center gap-2.5 group transition-opacity hover:opacity-90"
+                    >
+                        <div className="bg-blue-600 p-2.5 rounded-xl text-white shadow-md shadow-blue-600/10 transition-transform duration-300 group-hover:scale-105">
+                            <Hexagon size={28} strokeWidth={2.5} />
+                        </div>
+                        <span className="text-3xl font-bold text-slate-900 tracking-tight">
+                            Mini Quiz
+                        </span>
+                    </Link>
+                </div>
+
+                {children}
+            </div>
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/app/(auth)/layout.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/app/(auth)/login/page.tsx ---
+import LoginForm from '@/features/auth/components/LoginForm';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Login - Mini Quiz Ambis',
+};
+
+export default function LoginPage() {
+    return <LoginForm />;
+}
+--- END FILE: mini-quiz-ambis/src/app/(auth)/login/page.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/app/(auth)/register/page.tsx ---
+import RegisterForm from '@/features/auth/components/RegisterForm';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Daftar Akun - Mini Quiz Ambis',
+};
+
+export default function RegisterPage() {
+    return <RegisterForm />;
+}
+--- END FILE: mini-quiz-ambis/src/app/(auth)/register/page.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/app/(auth)/verify/page.tsx ---
+import { Suspense } from 'react';
+import VerifyForm from '@/features/auth/components/VerifyForm';
+import { Metadata } from 'next';
+import { Loader2 } from 'lucide-react';
+
+export const metadata: Metadata = {
+    title: 'Verifikasi Email - Mini Quiz Ambis',
+};
+
+export default function VerifyPage() {
+    return (
+        <Suspense fallback={<div className="flex justify-center"><Loader2 className="animate-spin text-blue-600" /></div>}>
+            <VerifyForm />
+        </Suspense>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/app/(auth)/verify/page.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/app/(dashboard)/dashboard/page.tsx ---
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useSubtests, useStartQuiz, useActiveSession } from '@/features/quiz/hooks/useQuiz';
+import { Play, BookOpen, Clock, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { Loader2 } from 'lucide-react';
+
+export default function DashboardPage() {
+    const router = useRouter();
+    const { data: subtests, isLoading: loadingSubtests } = useSubtests();
+    const { data: activeSession, isLoading: loadingSession } = useActiveSession();
+    const { mutate: startQuiz, isPending: isStarting } = useStartQuiz();
+
+    if (loadingSubtests || loadingSession) {
+        return (
+            <div className="h-[60vh] flex flex-col items-center justify-center text-slate-400 gap-2">
+                <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+                <p className="text-sm font-medium">Memuat data kuis...</p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
+            <div className="space-y-2">
+                <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
+                    Mau belajar apa hari ini?
+                </h1>
+                <p className="text-slate-500 text-lg">Pilih topik dan asah kemampuanmu sekarang.</p>
+            </div>
+
+            {activeSession && (
+                <div className="bg-linear-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 text-white shadow-xl shadow-blue-600/20 flex flex-col sm:flex-row items-center justify-between gap-6 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-16 -mt-16 blur-3xl pointer-events-none" />
+
+                    <div className="flex items-start gap-4 relative z-10">
+                        <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm shadow-inner border border-white/10">
+                            <Clock size={28} className="text-white" />
+                        </div>
+                        <div>
+                            <div className="flex items-center gap-2 mb-1">
+                                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-400 text-amber-900 uppercase tracking-wide">
+                                    Berlangsung
+                                </span>
+                            </div>
+                            <h3 className="text-lg font-bold leading-tight">{activeSession.subtest_name}</h3>
+                            <p className="text-blue-100 text-sm mt-1">Sesi Anda belum diselesaikan.</p>
+                        </div>
+                    </div>
+                    <Button
+                        onClick={() => router.push('/quiz/session')}
+                        className="bg-white text-blue-700 hover:bg-blue-50 border-none w-full sm:w-auto shadow-lg relative z-10 font-bold"
+                    >
+                        Lanjutkan <ArrowRight size={18} className="ml-2" />
+                    </Button>
+                </div>
+            )}
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {subtests?.map((item) => (
+                    <div
+                        key={item.id}
+                        className="group bg-white p-1 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300 hover:-translate-y-1"
+                    >
+                        <div className="bg-slate-50/50 p-6 rounded-[20px] h-full flex flex-col justify-between group-hover:bg-white transition-colors">
+                            <div>
+                                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-700 shadow-sm mb-4 border border-slate-100 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                                    <BookOpen size={24} />
+                                </div>
+                                <h3 className="text-xl font-bold text-slate-900 mb-2 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                                    {item.title}
+                                </h3>
+                                <p className="text-slate-500 text-sm leading-relaxed line-clamp-3">
+                                    {item.description || 'Latihan soal intensif untuk mengukur pemahaman materi.'}
+                                </p>
+                            </div>
+
+                            <div className="mt-6 pt-6 border-t border-slate-100 flex items-center justify-between">
+                                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                                    {item.question_count || 10} Soal
+                                </span>
+                                <Button
+                                    onClick={() => startQuiz(item.id)}
+                                    isLoading={isStarting}
+                                    disabled={!!activeSession}
+                                    className="bg-slate-900 hover:bg-slate-800 text-white rounded-xl h-10 px-5 shadow-lg shadow-slate-900/10 group-hover:shadow-blue-600/20 group-hover:bg-blue-600 group-hover:hover:bg-blue-700 disabled:opacity-50 disabled:shadow-none"
+                                >
+                                    Mulai <Play size={16} className="ml-2 fill-current" />
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/app/(dashboard)/dashboard/page.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/app/(dashboard)/history/[id]/page.tsx ---
+import HistoryDetail from '@/features/history/components/HistoryDetail';
+
+interface PageProps {
+    params: Promise<{ id: string }>;
+}
+
+export default async function HistoryDetailPage(props: PageProps) {
+    const params = await props.params;
+    return (
+        <div className="max-w-4xl mx-auto pb-12">
+            <HistoryDetail sessionId={params.id} />
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/app/(dashboard)/history/[id]/page.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/app/(dashboard)/history/page.tsx ---
+import HistoryList from '@/features/history/components/HistoryList';
+
+export default function HistoryPage() {
+    return (
+        <div className="max-w-5xl mx-auto">
+            <h1 className="text-3xl font-bold text-slate-900 mb-6">Riwayat Pengerjaan</h1>
+            <HistoryList />
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/app/(dashboard)/history/page.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/app/(dashboard)/layout.tsx ---
+import Navbar from '@/components/layout/Navbar';
+import Link from 'next/link';
+import { Hexagon } from 'lucide-react';
+
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <div className="min-h-screen bg-slate-50 pb-24 md:pb-12">
+            <div className="md:hidden fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-md px-4 py-3 border-b border-slate-200 z-50 flex justify-center items-center shadow-sm h-14">
+                <h1 className="font-bold text-lg text-slate-900">Mini Quiz Ambis</h1>
+            </div>
+
+            <header className="hidden md:block bg-white border-b sticky top-0 z-40 px-6 py-4 shadow-sm/50">
+                <div className="max-w-6xl mx-auto flex justify-between items-center">
+                    <Link href="/dashboard" className="flex items-center gap-2 group">
+                        <div className="bg-blue-600 p-2 rounded-lg text-white shadow-md shadow-blue-600/20 group-hover:scale-105 transition-transform">
+                            <Hexagon size={24} strokeWidth={2.5} />
+                        </div>
+                        <h1 className="font-bold text-xl text-slate-900 tracking-tight">Mini Quiz</h1>
+                    </Link>
+
+                    <div>
+                        <Navbar />
+                    </div>
+                </div>
+            </header>
+
+            <div className="max-w-6xl mx-auto p-4 pt-20 md:p-8 md:pt-8">
+                {children}
+            </div>
+
+            <div className="md:hidden">
+                <Navbar />
+            </div>
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/app/(dashboard)/layout.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/app/(dashboard)/profile/page.tsx ---
+'use client';
+
+import ProfileForm from '@/features/profile/components/ProfileForm';
+import ChangePasswordForm from '@/features/profile/components/ChangePasswordForm';
+import { User, Lock, LogOut } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { STORAGE_KEYS } from '@/lib/utils';
+import { useQuizStore } from '@/features/quiz/store/quizStore';
+import { useRouter } from 'next/navigation';
+
+export default function ProfilePage() {
+    const router = useRouter();
+    const { resetAnswers } = useQuizStore();
+
+    const handleLogout = () => {
+        if (confirm('Yakin ingin keluar dari akun?')) {
+            localStorage.removeItem(STORAGE_KEYS.TOKEN);
+            resetAnswers();
+            router.replace('/login');
+        }
+    };
+
+    return (
+        <div className="max-w-3xl mx-auto space-y-8 pb-12 animate-in slide-in-from-bottom-4 duration-500">
+            <div className="bg-white rounded-3xl p-8 shadow-xl shadow-slate-200/50 border border-slate-100 text-center relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-32 bg-linear-to-r from-blue-600 to-indigo-600" />
+
+                <div className="relative pt-16">
+                    <div className="w-24 h-24 bg-white rounded-full mx-auto p-1.5 shadow-lg mb-4">
+                        <div className="w-full h-full bg-slate-100 rounded-full flex items-center justify-center text-slate-400">
+                            <User size={40} />
+                        </div>
+                    </div>
+                    <h1 className="text-2xl font-bold text-slate-900">Pengaturan Akun</h1>
+                    <p className="text-slate-500 text-sm mt-1">Kelola data diri dan keamanan akun Anda</p>
+                </div>
+            </div>
+
+            <div className="grid gap-6">
+                <section className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-50">
+                        <div className="p-2.5 bg-blue-50 text-blue-600 rounded-xl">
+                            <User size={20} />
+                        </div>
+                        <h2 className="text-lg font-bold text-slate-900">Data Diri</h2>
+                    </div>
+                    <ProfileForm />
+                </section>
+
+                <section className="bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-50">
+                        <div className="p-2.5 bg-green-50 text-green-600 rounded-xl">
+                            <Lock size={20} />
+                        </div>
+                        <h2 className="text-lg font-bold text-slate-900">Keamanan</h2>
+                    </div>
+                    <ChangePasswordForm />
+                </section>
+
+                <div className="pt-8 flex justify-center">
+                    <Button
+                        variant="ghost"
+                        onClick={handleLogout}
+                        className="text-red-500 hover:text-red-600 hover:bg-red-50 px-8 py-3 h-auto"
+                    >
+                        <LogOut size={18} className="mr-2" /> Keluar dari Aplikasi
+                    </Button>
+                </div>
+            </div>
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/app/(dashboard)/profile/page.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/app/(dashboard)/quiz/session/page.tsx ---
+'use client';
+
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { useActiveSession, useSubmitQuiz } from '@/features/quiz/hooks/useQuiz';
+import { useQuizStore } from '@/features/quiz/store/quizStore';
+import { toast } from 'sonner';
+import { Loader2, AlertTriangle, Flag, WifiOff } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/Button';
+import { AxiosError } from 'axios';
+
+import QuestionCard from '@/features/quiz/components/QuestionCard';
+import QuestionNavigator from '@/features/quiz/components/QuestionNavigator';
+import SubmitModal from '@/features/quiz/components/SubmitModal';
+import QuizHeader from '@/features/quiz/components/QuizHeader';
+import QuizFooter from '@/features/quiz/components/QuizFooter';
+import MobileNavigator from '@/features/quiz/components/MobileNavigator';
+
+export default function QuizSessionPage() {
+    const router = useRouter();
+    const { data: session, isLoading, isError, error } = useActiveSession();
+    const { mutate: submit, isPending } = useSubmitQuiz();
+
+    const {
+        answers,
+        flags,
+        toggleFlag,
+        sessionId: storedSessionId,
+        setSessionId,
+        resetAnswers
+    } = useQuizStore();
+
+    const [index, setIndex] = useState(0);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+    const [currentTime, setCurrentTime] = useState<number | null>(null);
+
+    const isSubmittingRef = useRef(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setCurrentTime(Date.now());
+        }, 0);
+        return () => clearTimeout(timer);
+    }, []);
+
+    const isSessionMismatch = session?.session_id && storedSessionId !== session.session_id;
+
+    const isExpiredOnLoad = session && currentTime !== null
+        ? new Date(session.expires_at).getTime() < currentTime
+        : false;
+
+    useEffect(() => {
+        if (isSessionMismatch && session) {
+            resetAnswers();
+            setSessionId(session.session_id);
+        }
+    }, [isSessionMismatch, session, resetAnswers, setSessionId]);
+
+    useEffect(() => {
+        if (!isLoading && !session && !isError && !isSubmittingRef.current) {
+            toast.info('Tidak ada sesi kuis yang aktif.');
+            resetAnswers();
+            router.replace('/dashboard');
+        }
+    }, [isLoading, session, isError, resetAnswers, router]);
+
+    useEffect(() => {
+        if (isError) {
+            const isServerError = error instanceof AxiosError && error.response && error.response.status >= 500;
+            if (!isServerError) {
+                toast.error('Gagal memuat sesi kuis.');
+                router.replace('/dashboard');
+            }
+        }
+    }, [isError, error, router]);
+
+    const handleFinalSubmit = useCallback((forceSubmit = false) => {
+        if (isSubmittingRef.current) return;
+
+        const totalQuestions = session?.questions?.length || 0;
+        const answeredCount = Object.keys(answers).length;
+
+        if (!forceSubmit && answeredCount < totalQuestions) {
+            toast.error(`Masih ada ${totalQuestions - answeredCount} soal kosong.`);
+            return;
+        }
+
+        isSubmittingRef.current = true;
+
+        const payload = Object.keys(answers).length === 0 ? { "0": "" } : answers;
+
+        submit(payload, {
+            onSuccess: () => {
+                setIsModalOpen(false);
+            },
+            onError: (err) => {
+                isSubmittingRef.current = false;
+                setIsModalOpen(false);
+
+                if (err.response?.status === 400 || err.response?.status === 404 || err.response?.status === 409) {
+                    toast.warning("Sesi telah berakhir atau waktu habis.");
+                    resetAnswers();
+                    router.replace('/history');
+                }
+            }
+        });
+    }, [answers, submit, router, resetAnswers, session]);
+
+    const handleManualSubmit = () => {
+        handleFinalSubmit(false);
+    };
+
+    const handleTimeout = useCallback(() => {
+        toast.warning('Waktu habis! Jawaban tersimpan otomatis dikirim.');
+        setIsModalOpen(false);
+        handleFinalSubmit(true);
+    }, [handleFinalSubmit]);
+
+    useEffect(() => {
+        if (isExpiredOnLoad && !isSubmittingRef.current && session) {
+            toast.error("Waktu sesi ini sudah habis. Menutup sesi...");
+            handleFinalSubmit(true);
+        }
+    }, [isExpiredOnLoad, handleFinalSubmit, session]);
+
+    if (isError) {
+        const isServerError = error instanceof AxiosError && error.response && error.response.status >= 500;
+
+        if (isServerError) {
+            return (
+                <div className="h-dvh flex flex-col items-center justify-center bg-slate-50 p-6 text-center">
+                    <div className="bg-red-100 p-4 rounded-full mb-4">
+                        <WifiOff className="w-10 h-10 text-red-600" />
+                    </div>
+                    <h2 className="text-xl font-bold text-slate-900 mb-2">
+                        Gangguan Server
+                    </h2>
+                    <p className="text-slate-500 mb-6 max-w-xs mx-auto">
+                        Server sedang mengalami gangguan (502/500). Mohon tunggu beberapa saat lagi.
+                    </p>
+                    <Button onClick={() => window.location.reload()} variant="outline">
+                        Coba Lagi
+                    </Button>
+                    <Button
+                        onClick={() => router.replace('/dashboard')}
+                        variant="ghost"
+                        className="mt-2 text-slate-500"
+                    >
+                        Kembali ke Dashboard
+                    </Button>
+                </div>
+            );
+        }
+    }
+
+    if (isLoading || isSessionMismatch || !session || isExpiredOnLoad || currentTime === null) {
+        return (
+            <div className="h-dvh flex flex-col items-center justify-center bg-slate-50 gap-4">
+                <Loader2 className="w-10 h-10 animate-spin text-slate-900" />
+                <p className="text-slate-500 font-medium animate-pulse">
+                    {isExpiredOnLoad ? 'Menutup sesi berakhir...' : 'Memuat soal...'}
+                </p>
+            </div>
+        );
+    }
+
+    const currentQuestion = session.questions[index];
+    const isFlagged = !!flags[currentQuestion.question_number.toString()];
+    const isAnswered = !!answers[currentQuestion.question_number.toString()];
+
+    return (
+        <div className="h-dvh bg-slate-50 flex flex-col overflow-hidden">
+            <div className="flex-none z-30">
+                <QuizHeader
+                    subtestName={session.subtest_name}
+                    currentIndex={index}
+                    totalQuestions={session.questions.length}
+                    expiresAt={session.expires_at}
+                    onTimeout={handleTimeout}
+                    onOpenMobileNav={() => setIsMobileNavOpen(true)}
+                />
+                <div className="w-full bg-slate-200 h-1">
+                    <div
+                        className="bg-blue-600 h-1 transition-all duration-300 ease-out"
+                        style={{ width: `${((index + 1) / session.questions.length) * 100}%` }}
+                    />
+                </div>
+            </div>
+
+            <main className="flex-1 overflow-y-auto w-full max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                <div className="md:col-span-8 lg:col-span-9 space-y-4 pb-20 md:pb-0">
+                    <QuestionCard question={currentQuestion} />
+
+                    <div className="flex justify-between items-center bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                        <Button
+                            variant="ghost"
+                            onClick={() => toggleFlag(currentQuestion.question_number.toString())}
+                            className={cn(
+                                "text-sm h-9 border transition-colors",
+                                isFlagged
+                                    ? "text-yellow-700 bg-yellow-50 border-yellow-200 hover:bg-yellow-100"
+                                    : "text-slate-500 border-transparent hover:text-slate-700 hover:bg-slate-50"
+                            )}
+                        >
+                            <Flag size={16} className={cn("mr-2", isFlagged && "fill-yellow-500 text-yellow-500")} />
+                            {isFlagged ? 'Ditandai Ragu' : 'Tandai Ragu'}
+                        </Button>
+
+                        {!isAnswered ? (
+                            <div className="flex items-center gap-2 text-amber-600 text-xs font-bold px-3 py-1.5 bg-amber-50 rounded-lg border border-amber-100 animate-in fade-in">
+                                <AlertTriangle size={14} />
+                                <span>Belum diisi</span>
+                            </div>
+                        ) : (
+                            <div className="flex items-center gap-2 text-green-600 text-xs font-bold px-3 py-1.5 bg-green-50 rounded-lg border border-green-100 animate-in fade-in">
+                                <span className="w-2 h-2 rounded-full bg-green-500" />
+                                <span>Terjawab</span>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                <div className="hidden md:block md:col-span-4 lg:col-span-3 sticky top-4">
+                    <QuestionNavigator
+                        totalQuestions={session.questions.length}
+                        currentIndex={index}
+                        onNavigate={setIndex}
+                    />
+                </div>
+            </main>
+
+            <div className="flex-none z-20">
+                <QuizFooter
+                    onPrev={() => setIndex(p => Math.max(0, p - 1))}
+                    onNext={() => setIndex(p => Math.min(session.questions.length - 1, p + 1))}
+                    onSubmit={() => setIsModalOpen(true)}
+                    isFirst={index === 0}
+                    isLast={index === session.questions.length - 1}
+                    isLoading={isPending}
+                />
+            </div>
+
+            <MobileNavigator
+                isOpen={isMobileNavOpen}
+                onClose={() => setIsMobileNavOpen(false)}
+                totalQuestions={session.questions.length}
+                currentIndex={index}
+                onNavigate={setIndex}
+            />
+
+            <SubmitModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onConfirm={handleManualSubmit}
+                totalQuestions={session.questions.length}
+                isSubmitting={isPending}
+            />
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/app/(dashboard)/quiz/session/page.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/app/api/proxy/[...path]/route.ts ---
+import { NextRequest, NextResponse } from "next/server";
+
+interface RouteParams {
+    path: string[];
+}
+
+interface RouteContext {
+    params: Promise<RouteParams>;
+}
+
+const API_BASE_URL = "https://apiquiz.ambisiusacademy.com/api/v1";
+
+async function handleRequest(
+    req: NextRequest,
+    context: RouteContext
+): Promise<NextResponse> {
+    try {
+        const { path } = await context.params;
+        const urlString = `${API_BASE_URL}/${path.join("/")}`;
+
+        let body: unknown = undefined;
+        const contentType = req.headers.get("content-type");
+
+        if (
+            req.method !== "GET" &&
+            req.method !== "DELETE" &&
+            contentType?.includes("application/json")
+        ) {
+            try {
+                body = await req.json();
+            } catch {
+                body = null;
+            }
+        }
+
+        const headers = new Headers();
+        headers.set("Content-Type", "application/json");
+        headers.set("Accept", "application/json");
+
+        const authHeader = req.headers.get("Authorization");
+        if (authHeader) {
+            headers.set("Authorization", authHeader);
+        }
+
+        const backendResponse = await fetch(urlString, {
+            method: req.method,
+            headers: headers,
+            body: body ? JSON.stringify(body) : undefined,
+        });
+
+        const resContentType = backendResponse.headers.get("content-type");
+        let responseData;
+
+        if (resContentType && resContentType.includes("application/json")) {
+            responseData = await backendResponse.json();
+        } else {
+            const textBody = await backendResponse.text();
+            console.error("[Proxy] Non-JSON Response:", textBody.substring(0, 200));
+            responseData = {
+                success: false,
+                error: `Server Error (${backendResponse.status}). Backend mungkin sedang mengalami gangguan.`,
+                details: textBody.substring(0, 100)
+            };
+        }
+
+        return NextResponse.json(responseData, { status: backendResponse.status });
+
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error
+            ? error.message
+            : "Unknown Internal Proxy Error";
+
+        console.error("[Proxy Error]:", errorMessage);
+
+        return NextResponse.json(
+            { success: false, error: errorMessage },
+            { status: 500 }
+        );
+    }
+}
+
+export const GET = handleRequest;
+export const POST = handleRequest;
+export const PUT = handleRequest;
+export const DELETE = handleRequest;
+--- END FILE: mini-quiz-ambis/src/app/api/proxy/[...path]/route.ts ---
+
+--- START FILE: mini-quiz-ambis/src/app/globals.css ---
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
+--- END FILE: mini-quiz-ambis/src/app/globals.css ---
+
+--- START FILE: mini-quiz-ambis/src/app/layout.tsx ---
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import QueryProvider from '@/components/QueryProvider';
+import { Toaster } from 'sonner';
+
+const inter = Inter({ subsets: ['latin'] });
+
+export const metadata: Metadata = {
+  title: 'Mini Quiz Ambis',
+  description: 'High Performance Quiz Platform',
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        <QueryProvider>
+          {children}
+          <Toaster position="top-right" richColors />
+        </QueryProvider>
+      </body>
+    </html>
+  );
+}
+--- END FILE: mini-quiz-ambis/src/app/layout.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/app/page.tsx ---
+import { redirect } from 'next/navigation';
+
+export default function RootPage() {
+  redirect('/login');
+}
+--- END FILE: mini-quiz-ambis/src/app/page.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/components/layout/Navbar.tsx ---
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { Home, History, User } from 'lucide-react';
+
+export default function Navbar() {
+    const pathname = usePathname();
+    const isQuizSession = pathname.startsWith('/quiz/session');
+
+    if (isQuizSession) return null;
+
+    const links = [
+        { href: '/dashboard', label: 'Home', icon: Home },
+        { href: '/history', label: 'Riwayat', icon: History },
+        { href: '/profile', label: 'Akun', icon: User },
+    ];
+
+    return (
+        <nav className="fixed bottom-0 left-0 w-full bg-white border-t md:static md:border-none md:bg-transparent md:mb-0 transition-all duration-300 z-50">
+            <div className="flex justify-around md:justify-end md:gap-8 p-3 md:p-0 max-w-5xl mx-auto">
+                {links.map((link) => {
+                    const Icon = link.icon;
+                    const isActive = pathname === link.href;
+                    return (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className={cn(
+                                "flex flex-col md:flex-row items-center gap-1 md:gap-2 px-4 py-2 rounded-xl transition-all duration-200",
+                                isActive
+                                    ? "text-blue-600 bg-blue-50 font-bold"
+                                    : "text-slate-500 hover:text-slate-900 hover:bg-slate-100 font-medium"
+                            )}
+                        >
+                            <Icon size={isActive ? 22 : 20} strokeWidth={isActive ? 2.5 : 2} />
+                            <span className="text-[10px] md:text-sm">{link.label}</span>
+                        </Link>
+                    );
+                })}
+            </div>
+        </nav>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/components/layout/Navbar.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/components/QueryProvider.tsx ---
+'use client';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useState, ReactNode } from 'react';
+
+export default function QueryProvider({ children }: { children: ReactNode }) {
+    const [client] = useState(() => new QueryClient({
+        defaultOptions: {
+            queries: {
+                retry: 1,
+                refetchOnWindowFocus: false,
+            },
+        },
+    }));
+
+    return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
+}
+--- END FILE: mini-quiz-ambis/src/components/QueryProvider.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/components/ui/Button.tsx ---
+import { ButtonHTMLAttributes, forwardRef } from 'react';
+import { Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    variant?: 'primary' | 'danger' | 'outline' | 'ghost';
+    isLoading?: boolean;
+}
+
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+    ({ className, variant = 'primary', isLoading, children, disabled, ...props }, ref) => {
+        const variants = {
+            primary: 'bg-slate-900 text-white hover:bg-slate-800 shadow-md',
+            danger: 'bg-red-600 text-white hover:bg-red-700 shadow-md',
+            outline: 'border-2 border-slate-200 hover:border-slate-300 text-slate-700 bg-transparent',
+            ghost: 'bg-transparent hover:bg-slate-100 text-slate-600',
+        };
+
+        return (
+            <button
+                ref={ref}
+                disabled={disabled || isLoading}
+                className={cn(
+                    'flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-medium transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none',
+                    variants[variant],
+                    className
+                )}
+                {...props}
+            >
+                {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                {children}
+            </button>
+        );
+    }
+);
+
+Button.displayName = 'Button';
+export { Button };
+--- END FILE: mini-quiz-ambis/src/components/ui/Button.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/components/ui/Input.tsx ---
+import { InputHTMLAttributes, forwardRef, useState } from 'react';
+import { cn } from '@/lib/utils';
+import { AlertCircle, Eye, EyeOff } from 'lucide-react';
+
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+    label?: string;
+    error?: string;
+}
+
+const Input = forwardRef<HTMLInputElement, InputProps>(
+    ({ className, type, label, error, ...props }, ref) => {
+        const [isVisible, setIsVisible] = useState(false);
+        const isPasswordType = type === 'password';
+        const inputType = isPasswordType ? (isVisible ? 'text' : 'password') : type;
+
+        return (
+            <div className="w-full space-y-2">
+                {label && (
+                    <label className={cn(
+                        "text-sm font-semibold block transition-colors",
+                        error ? "text-red-600" : "text-slate-700"
+                    )}>
+                        {label}
+                    </label>
+                )}
+
+                <div className="relative group">
+                    <input
+                        ref={ref}
+                        type={inputType}
+                        className={cn(
+                            'flex w-full rounded-xl border px-4 py-3 text-sm font-medium transition-all duration-200 outline-none',
+                            'bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400',
+                            'focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10',
+                            error && 'border-red-300 bg-red-50 text-red-900 focus:border-red-500 focus:ring-red-500/10 placeholder:text-red-300',
+                            isPasswordType && 'pr-12',
+                            className
+                        )}
+                        {...props}
+                    />
+
+                    {isPasswordType && (
+                        <button
+                            type="button"
+                            onClick={() => setIsVisible(!isVisible)}
+                            className={cn(
+                                "absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-lg transition-colors focus:outline-none",
+                                error
+                                    ? "text-red-400 hover:bg-red-100 hover:text-red-600"
+                                    : "text-slate-400 hover:bg-slate-200 hover:text-slate-600"
+                            )}
+                            tabIndex={-1}
+                        >
+                            {isVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+                        </button>
+                    )}
+                </div>
+
+                {error && (
+                    <div className="flex items-center gap-2 mt-1.5 animate-in slide-in-from-top-1 fade-in duration-300">
+                        <AlertCircle size={14} className="text-red-600 shrink-0" />
+                        <p className="text-xs text-red-600 font-medium">{error}</p>
+                    </div>
+                )}
+            </div>
+        );
+    }
+);
+
+Input.displayName = 'Input';
+export { Input };
+--- END FILE: mini-quiz-ambis/src/components/ui/Input.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/auth/components/LoginForm.tsx ---
+'use client';
+
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { loginSchema, LoginInput } from '../types';
+import { useLogin } from '../hooks/useLogin';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { LogIn, AlertTriangle } from 'lucide-react';
+import { toast } from 'sonner';
+import { STORAGE_KEYS } from '@/lib/utils';
+import { parseApiError } from '@/lib/error-handler';
+
+export default function LoginForm() {
+    const router = useRouter();
+    const { mutate, isPending } = useLogin();
+    const [globalError, setGlobalError] = useState<string | null>(null);
+
+    const {
+        register,
+        handleSubmit,
+        setError,
+        formState: { errors }
+    } = useForm<LoginInput>({
+        resolver: zodResolver(loginSchema),
+        mode: 'onSubmit', 
+        reValidateMode: 'onChange'
+    });
+
+    const onSubmit = (data: LoginInput) => {
+        setGlobalError(null);
+
+        mutate(data, {
+            onSuccess: (response) => {
+                localStorage.setItem(STORAGE_KEYS.TOKEN, response.data.access_token);
+                toast.success('Login Berhasil! Mengalihkan...');
+                router.push('/dashboard');
+            },
+            onError: (error) => {
+                const errorMessage = parseApiError(error);
+                const status = error.response?.status;
+
+                if (status === 401) {
+                    setError('root', { type: 'manual', message: errorMessage });
+                    setError('email', { type: 'manual', message: ' ' });
+                    setError('password', { type: 'manual', message: 'Email atau password salah.' });
+                } else if (status === 404) {
+                    setError('email', { type: 'manual', message: 'Email tidak terdaftar.' });
+                } else {
+                    setGlobalError(errorMessage);
+                }
+
+                toast.error(errorMessage);
+            }
+        });
+    };
+
+    return (
+        <div className="bg-white p-8 md:p-10 rounded-3xl shadow-xl shadow-slate-200/60 border border-white ring-1 ring-slate-100 backdrop-blur-xl">
+            <div className="mb-8 text-center space-y-2">
+                <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                    Selamat Datang
+                </h2>
+                <p className="text-slate-500 text-sm font-medium">
+                    Masukkan akun Anda untuk melanjutkan belajar.
+                </p>
+            </div>
+
+            {globalError && (
+                <div className="mb-6 bg-red-50 border border-red-100 text-red-600 px-4 py-3 rounded-xl flex items-start gap-3 text-sm animate-in fade-in slide-in-from-top-2">
+                    <AlertTriangle className="shrink-0 mt-0.5" size={18} />
+                    <p className="font-medium leading-relaxed">{globalError}</p>
+                </div>
+            )}
+
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
+                <div className="space-y-4">
+                    <Input
+                        label="Email Address"
+                        placeholder="contoh: nama@email.com"
+                        type="email"
+                        autoComplete="email"
+                        error={errors.email?.message || (errors.root ? " " : undefined)}
+                        {...register('email')}
+                    />
+
+                    <Input
+                        label="Password"
+                        placeholder="Masukkan kata sandi"
+                        type="password"
+                        autoComplete="current-password"
+                        error={errors.password?.message}
+                        {...register('password')}
+                    />
+                </div>
+
+                <div className="pt-2">
+                    <Button
+                        type="submit"
+                        disabled={isPending}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-600/20 active:scale-[0.98] transition-all"
+                    >
+                        {isPending ? 'Memproses...' : 'Masuk Sekarang'}
+                        {!isPending && <LogIn size={20} className="ml-2" />}
+                    </Button>
+                </div>
+            </form>
+
+            <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+                <p className="text-sm text-slate-500 font-medium">
+                    Belum memiliki akun?{' '}
+                    <Link href="/register" className="text-blue-600 font-bold hover:text-blue-700 hover:underline transition-colors ml-1">
+                        Daftar Gratis
+                    </Link>
+                </p>
+            </div>
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/auth/components/LoginForm.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/auth/components/RegisterForm.tsx ---
+'use client';
+
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { registerSchema, RegisterInput } from '../types';
+import { useRegister } from '../hooks/useRegister';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+
+export default function RegisterForm() {
+    const { mutate, isPending } = useRegister();
+    const { register, handleSubmit, formState: { errors } } = useForm<RegisterInput>({
+        resolver: zodResolver(registerSchema),
+        mode: 'onTouched',
+    });
+
+    return (
+        <div className="bg-white p-8 rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-100">
+            <div className="mb-8 text-center">
+                <h2 className="text-2xl font-bold text-slate-900">Buat Akun Baru</h2>
+            </div>
+
+            <form onSubmit={handleSubmit((data) => mutate(data))} className="space-y-5">
+                <Input
+                    label="Nama Lengkap"
+                    placeholder="Contoh: Kucing Manis"
+                    error={errors.name?.message}
+                    {...register('name')}
+                />
+
+                <Input
+                    label="Email Address"
+                    type="email"
+                    placeholder="nama@email.com"
+                    error={errors.email?.message}
+                    {...register('email')}
+                />
+
+                <Input
+                    label="Password"
+                    type="password"
+                    placeholder="Min. 8 karakter"
+                    error={errors.password?.message}
+                    {...register('password')}
+                />
+
+                <div className="pt-2">
+                    <Button
+                        type="submit"
+                        className="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3"
+                        isLoading={isPending}
+                    >
+                        Daftar Sekarang <ArrowRight size={18} className="ml-2" />
+                    </Button>
+                </div>
+            </form>
+
+            <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+                <p className="text-sm text-slate-600">
+                    Sudah punya akun?{' '}
+                    <Link href="/login" className="text-blue-600 font-bold hover:underline hover:text-blue-700 transition-colors">
+                        Login Disini
+                    </Link>
+                </p>
+            </div>
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/auth/components/RegisterForm.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/auth/components/VerifyForm.tsx ---
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/Button';
+import { Mail, CheckCircle2, ArrowRight } from 'lucide-react';
+
+export default function VerifyForm() {
+    const router = useRouter();
+
+    return (
+        <div className="bg-white p-8 rounded-2xl shadow-lg shadow-slate-200/50 border border-slate-100 max-w-md w-full">
+            <div className="text-center mb-8">
+                <div className="relative inline-block mb-4">
+                    <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center text-blue-600 animate-in zoom-in duration-300">
+                        <Mail size={40} />
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 bg-green-500 text-white rounded-full p-1.5 border-4 border-white animate-in fade-in slide-in-from-bottom-2 duration-500 delay-150">
+                        <CheckCircle2 size={16} strokeWidth={3} />
+                    </div>
+                </div>
+
+                <h2 className="text-2xl font-bold text-slate-900">Cek Email Anda</h2>
+                <p className="text-slate-500 text-sm mt-3 leading-relaxed">
+                    Kami telah mengirimkan tautan verifikasi. <br />
+                    Silakan <b>klik tautan tersebut</b> untuk mengaktifkan akun.
+                </p>
+            </div>
+
+            <div className="space-y-4">
+                <Button
+                    onClick={() => router.push('/login')}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 shadow-lg shadow-blue-600/20"
+                >
+                    Saya Sudah Verifikasi, Login <ArrowRight size={18} className="ml-2" />
+                </Button>
+
+                <p className="text-xs text-center text-slate-400">
+                    Tidak menerima email? Cek folder <b>Spam</b> atau <b>Promosi</b>.
+                </p>
+            </div>
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/auth/components/VerifyForm.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/auth/hooks/useLogin.ts ---
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import apiClient from '@/lib/axios';
+import { LoginInput, AuthResponse } from '../types';
+import { ApiResponse, ApiErrorResponse } from '@/types/api';
+
+export const useLogin = () => {
+    return useMutation<ApiResponse<AuthResponse>, AxiosError<ApiErrorResponse>, LoginInput>({
+        mutationFn: async (credentials) => {
+            const { data } = await apiClient.post<ApiResponse<AuthResponse>>('/auth/login', credentials);
+            return data;
+        },
+    });
+};
+--- END FILE: mini-quiz-ambis/src/features/auth/hooks/useLogin.ts ---
+
+--- START FILE: mini-quiz-ambis/src/features/auth/hooks/useRegister.ts ---
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
+import apiClient from '@/lib/axios';
+import { RegisterInput } from '../types';
+import { ApiResponse, ApiErrorResponse } from '@/types/api';
+import { parseApiError } from '@/lib/error-handler';
+
+export const useRegister = () => {
+    const router = useRouter();
+
+    return useMutation<ApiResponse<null>, AxiosError<ApiErrorResponse>, RegisterInput>({
+        mutationFn: async (data) => {
+            const response = await apiClient.post<ApiResponse<null>>('/auth/register', data);
+            return response.data;
+        },
+        onSuccess: () => {
+            toast.success('Registrasi berhasil! Silakan cek email Anda.');
+            router.push('/verify');
+        },
+        onError: (error) => {
+            const message = parseApiError(error);
+            toast.error(message);
+        },
+    });
+};
+--- END FILE: mini-quiz-ambis/src/features/auth/hooks/useRegister.ts ---
+
+--- START FILE: mini-quiz-ambis/src/features/auth/hooks/useVerify.ts ---
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
+import apiClient from '@/lib/axios';
+import { VerifyInput } from '../types';
+import { ApiErrorResponse, ApiResponse } from '@/types/api';
+import { parseApiError } from '@/lib/error-handler';
+
+export const useVerify = () => {
+    const router = useRouter();
+
+    return useMutation<ApiResponse<null>, AxiosError<ApiErrorResponse>, VerifyInput>({
+        mutationFn: async (data) => {
+            const response = await apiClient.post<ApiResponse<null>>('/auth/verify-email', data);
+            return response.data;
+        },
+        onSuccess: () => {
+            toast.success('Akun terverifikasi! Silakan login.');
+            router.push('/login');
+        },
+        onError: (error) => {
+            const message = parseApiError(error);
+            toast.error(message);
+        },
+    });
+};
+--- END FILE: mini-quiz-ambis/src/features/auth/hooks/useVerify.ts ---
+
+--- START FILE: mini-quiz-ambis/src/features/auth/types/index.ts ---
+import { z } from 'zod';
+
+export const loginSchema = z.object({
+    email: z.string().min(1, 'Email wajib diisi').email('Format email tidak valid'),
+    password: z.string().min(1, 'Password wajib diisi'),
+});
+export type LoginInput = z.infer<typeof loginSchema>;
+
+export const registerSchema = z.object({
+    name: z.string()
+        .min(1, 'Nama lengkap wajib diisi')
+        .min(3, 'Nama terlalu pendek'),
+    email: z.string()
+        .min(1, 'Email wajib diisi')
+        .email('Format email tidak valid'),
+    password: z.string()
+        .min(8, 'Min. 8 karakter')
+        .regex(/[A-Z]/, 'Wajib ada 1 huruf besar')
+        .regex(/[0-9]/, 'Wajib ada 1 angka')
+        .regex(/[^a-zA-Z0-9]/, 'Wajib ada 1 simbol unik'),
+});
+export type RegisterInput = z.infer<typeof registerSchema>;
+
+export const verifySchema = z.object({
+    token: z.string().min(1, 'Token wajib diisi'),
+});
+export type VerifyInput = z.infer<typeof verifySchema>;
+
+export interface AuthResponse {
+    access_token: string;
+    refresh_token: string;
+    expires_in: number;
+}
+--- END FILE: mini-quiz-ambis/src/features/auth/types/index.ts ---
+
+--- START FILE: mini-quiz-ambis/src/features/history/components/HistoryDetail.tsx ---
+'use client';
+
+import { useQuizResult } from '../hooks/useHistory';
+import { Loader2, ArrowLeft, Clock, Trophy, Target, BarChart3, Calendar, Timer, CheckCircle2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/Button';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
+
+interface Props {
+    sessionId: string;
+}
+
+export default function HistoryDetail({ sessionId }: Props) {
+    const router = useRouter();
+    const { data: result, isLoading, isError } = useQuizResult(sessionId);
+
+    if (isLoading) {
+        return (
+            <div className="h-[60vh] flex flex-col items-center justify-center text-slate-400 gap-3">
+                <Loader2 className="animate-spin text-blue-600" size={40} />
+                <p className="text-sm font-medium animate-pulse">Sedang memuat analisis hasil...</p>
+            </div>
+        );
+    }
+
+    if (isError || !result) {
+        return (
+            <div className="flex flex-col items-center justify-center py-20 text-center h-[60vh]">
+                <div className="bg-red-50 p-6 rounded-full mb-6 animate-in zoom-in duration-300">
+                    <BarChart3 size={48} className="text-red-500" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-2">Data Tidak Ditemukan</h3>
+                <p className="text-slate-500 mb-8 max-w-md leading-relaxed">
+                    Detail statistik untuk sesi ini tidak tersedia atau terjadi kesalahan saat mengambil data dari server.
+                </p>
+                <Button
+                    onClick={() => router.back()}
+                    variant="outline"
+                    className="px-8 border-slate-300 hover:bg-slate-50 text-slate-700"
+                >
+                    <ArrowLeft size={18} className="mr-2" /> Kembali ke Riwayat
+                </Button>
+            </div>
+        );
+    }
+
+    return (
+        <div className="max-w-5xl mx-auto space-y-8 animate-in slide-in-from-bottom-8 duration-700 pb-12">
+            <div className="flex items-center">
+                <Button
+                    variant="ghost"
+                    onClick={() => router.back()}
+                    className="pl-0 hover:bg-transparent text-slate-500 hover:text-slate-900 group"
+                >
+                    <ArrowLeft size={20} className="mr-2 group-hover:-translate-x-1 transition-transform" />
+                    Kembali
+                </Button>
+            </div>
+
+            <div className="relative overflow-hidden rounded-3xl bg-slate-900 shadow-2xl shadow-slate-900/20">
+                <div className="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute bottom-0 left-0 -mb-20 -ml-20 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="relative z-10 p-8 md:p-12 text-center text-white">
+                    <h2 className="text-lg md:text-xl font-medium text-slate-300 tracking-wide mb-1">
+                        Hasil Pengerjaan
+                    </h2>
+                    <h1 className="text-2xl md:text-4xl font-bold mb-8 leading-tight">
+                        {result.subtest_name}
+                    </h1>
+
+                    <div className="flex flex-col items-center justify-center">
+                        <div className="relative">
+                            <span className="text-8xl md:text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-linear-to-b from-white to-slate-400 drop-shadow-sm">
+                                {result.score}
+                            </span>
+                        </div>
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mt-4">
+                            <Trophy size={16} className="text-yellow-400 fill-yellow-400" />
+                            <span className="text-sm font-semibold tracking-wide">SKOR AKHIR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                    <div className="p-3 bg-green-50 text-green-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform">
+                        <Target size={28} />
+                    </div>
+                    <div className="text-3xl font-bold text-slate-900 mb-1">{result.percentage}%</div>
+                    <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Akurasi</div>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                    <div className="p-3 bg-blue-50 text-blue-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform">
+                        <CheckCircle2 size={28} />
+                    </div>
+                    <div className="text-3xl font-bold text-slate-900 mb-1">
+                        {result.correct_answers}<span className="text-lg text-slate-400 font-medium">/{result.total_questions}</span>
+                    </div>
+                    <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Jawaban Benar</div>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                    <div className="p-3 bg-orange-50 text-orange-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform">
+                        <Clock size={28} />
+                    </div>
+                    <div className="text-3xl font-bold text-slate-900 mb-1">
+                        {Math.floor(result.total_time_seconds / 60)}<span className="text-base text-slate-400 font-medium">m</span> {result.total_time_seconds % 60}<span className="text-base text-slate-400 font-medium">s</span>
+                    </div>
+                    <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Durasi</div>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center group">
+                    <div className="p-3 bg-purple-50 text-purple-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform">
+                        <Calendar size={28} />
+                    </div>
+                    <div className="text-lg font-bold text-slate-900 mb-1 mt-1 line-clamp-1">
+                        {result.completed_at ? format(new Date(result.completed_at), 'dd MMM yyyy', { locale: id }) : '-'}
+                    </div>
+                    <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">Tanggal</div>
+                </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-linear-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100 flex items-center gap-4">
+                    <div className="p-3 bg-white rounded-xl shadow-sm text-blue-600">
+                        <Timer size={24} />
+                    </div>
+                    <div>
+                        <p className="text-sm text-blue-600 font-medium mb-0.5">Kecepatan Rata-rata</p>
+                        <p className="text-xl font-bold text-slate-900">
+                            {result.average_time_per_question} <span className="text-sm font-normal text-slate-500">detik / soal</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 flex items-center justify-between">
+                    <div>
+                        <p className="text-sm text-slate-500 font-medium mb-1">Status Pengerjaan</p>
+                        <p className="text-lg font-bold text-green-600 flex items-center gap-2">
+                            <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
+                            Selesai & Disimpan
+                        </p>
+                    </div>
+                    <Button
+                        onClick={() => router.push('/dashboard')}
+                        className="bg-slate-900 text-white hover:bg-slate-800"
+                    >
+                        Ke Dashboard
+                    </Button>
+                </div>
+            </div>
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/history/components/HistoryDetail.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/history/components/HistoryList.tsx ---
+'use client';
+
+import { useHistory } from '../hooks/useHistory';
+import { Loader2, Calendar, Trophy, AlertCircle, CheckCircle2, Clock, ChevronRight } from 'lucide-react';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/Button';
+
+export default function HistoryList() {
+    const { data: history, isLoading, isError } = useHistory();
+    const router = useRouter();
+
+    if (isLoading) {
+        return (
+            <div className="flex flex-col items-center justify-center p-12 text-slate-400">
+                <Loader2 className="animate-spin mb-2" size={32} />
+                <p className="text-sm">Memuat riwayat...</p>
+            </div>
+        );
+    }
+
+    if (isError) {
+        return (
+            <div className="flex flex-col items-center justify-center p-12 text-red-500 bg-red-50 rounded-xl border border-red-100">
+                <AlertCircle size={32} className="mb-2" />
+                <p className="font-medium">Gagal memuat data riwayat.</p>
+            </div>
+        );
+    }
+
+    if (!Array.isArray(history) || history.length === 0) {
+        return (
+            <div className="text-center py-12 bg-white rounded-xl border border-dashed border-slate-300">
+                <div className="mx-auto w-12 h-12 bg-slate-50 text-slate-400 rounded-full flex items-center justify-center mb-3">
+                    <Trophy size={24} />
+                </div>
+                <h3 className="text-slate-900 font-medium">Belum ada riwayat</h3>
+                <p className="text-slate-500 text-sm">Yuk mulai kerjakan kuis pertamamu!</p>
+            </div>
+        );
+    }
+
+    return (
+        <div className="space-y-4">
+            {history.map((item) => (
+                <div
+                    key={item.id}
+                    className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-200 transition-all group"
+                >
+                    <div className="flex flex-col md:flex-row justify-between gap-4">
+                        <div className="space-y-2">
+                            <h3 className="font-bold text-slate-900 text-lg group-hover:text-blue-700 transition-colors">
+                                {item.subtest_name}
+                            </h3>
+
+                            <div className="flex flex-wrap gap-4 text-sm text-slate-500">
+                                <div className="flex items-center gap-1.5">
+                                    <Calendar size={14} />
+                                    <span>
+                                        {item.completed_at
+                                            ? format(new Date(item.completed_at), 'dd MMM yyyy, HH:mm', { locale: id })
+                                            : '-'}
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                    <Clock size={14} />
+                                    <span>{Math.floor(item.total_time_seconds / 60)} menit</span>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 mt-2">
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-green-50 text-green-700 text-xs font-medium">
+                                    <CheckCircle2 size={12} />
+                                    {item.correct_answers} / {item.total_questions} Benar
+                                </span>
+                                <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-blue-50 text-blue-700 text-xs font-medium">
+                                    {item.percentage}% Akurasi
+                                </span>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-between md:justify-end gap-6 md:border-l md:border-slate-100 md:pl-6">
+                            <div className="text-right">
+                                <span className="text-[10px] tracking-wider text-slate-400 uppercase font-bold block mb-1">
+                                    Skor Akhir
+                                </span>
+                                <div className="text-3xl font-black text-slate-900">
+                                    {item.score}
+                                </div>
+                            </div>
+
+                            <Button
+                                onClick={() => router.push(`/history/${item.session_id}`)}
+                                variant="outline"
+                                className="h-10 w-10 p-0 rounded-full border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50"
+                            >
+                                <ChevronRight size={20} />
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/history/components/HistoryList.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/history/hooks/useHistory.ts ---
+import { useQuery } from '@tanstack/react-query';
+import apiClient from '@/lib/axios';
+import { ApiResponse } from '@/types/api';
+import { HistoryResponse, HistoryDetailResponse } from '../types';
+
+export const useHistory = () => useQuery({
+    queryKey: ['history'],
+    queryFn: async () => {
+        const { data } = await apiClient.get<ApiResponse<HistoryResponse>>('/quiz/history?limit=20');
+        if (data && data.data && Array.isArray(data.data.results)) {
+            return data.data.results;
+        }
+        return [];
+    },
+});
+
+export const useQuizResult = (sessionId: string) => useQuery({
+    queryKey: ['quiz-result', sessionId],
+    queryFn: async () => {
+        const { data } = await apiClient.get<ApiResponse<HistoryDetailResponse>>(`/quiz/result/${sessionId}`);
+        return data.data?.result || null;
+    },
+    enabled: !!sessionId,
+});
+--- END FILE: mini-quiz-ambis/src/features/history/hooks/useHistory.ts ---
+
+--- START FILE: mini-quiz-ambis/src/features/history/types/index.ts ---
+export interface HistoryItem {
+    id: string;
+    session_id: string;
+    subtest_id: string;
+    subtest_name: string;
+    score: number;
+    percentage: number;
+    total_questions: number;
+    correct_answers: number;
+    total_time_seconds: number;
+    average_time_per_question: number;
+    completed_at: string;
+    created_at: string;
+}
+
+export interface HistoryResponse {
+    results: HistoryItem[];
+}
+
+export interface HistoryDetailResponse {
+    result: HistoryItem;
+}
+--- END FILE: mini-quiz-ambis/src/features/history/types/index.ts ---
+
+--- START FILE: mini-quiz-ambis/src/features/profile/components/ChangePasswordForm.tsx ---
+'use client';
+
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { passwordSchema, PasswordInput } from '../types';
+import { useChangePassword } from '../hooks/useProfile';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+
+export default function ChangePasswordForm() {
+    const { mutate, isPending } = useChangePassword();
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<PasswordInput>({
+        resolver: zodResolver(passwordSchema),
+    });
+
+    const onSubmit = (data: PasswordInput) => {
+        mutate(data, { onSuccess: () => reset() });
+    };
+
+    return (
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-md">
+            <Input
+                label="Password Lama"
+                type="password"
+                error={errors.old_password?.message}
+                {...register('old_password')}
+            />
+            <Input
+                label="Password Baru"
+                type="password"
+                error={errors.new_password?.message}
+                {...register('new_password')}
+            />
+            <Button type="submit" variant="outline" isLoading={isPending}>Update Password</Button>
+        </form>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/profile/components/ChangePasswordForm.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/profile/components/ProfileForm.tsx ---
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { profileSchema, ProfileInput } from '../types';
+import { useGetProfile, useUpdateProfile } from '../hooks/useProfile';
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Loader2, Save, Pencil, X } from 'lucide-react';
+
+export default function ProfileForm() {
+    const { data: profile, isLoading } = useGetProfile();
+    const { mutate, isPending } = useUpdateProfile();
+    const [isEditing, setIsEditing] = useState(false);
+
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<ProfileInput>({
+        resolver: zodResolver(profileSchema),
+    });
+
+    useEffect(() => {
+        if (profile) reset(profile);
+    }, [profile, reset]);
+
+    if (isLoading) return <div className="flex justify-center p-8"><Loader2 className="animate-spin text-slate-300" /></div>;
+
+    return (
+        <div className="space-y-6">
+            <div className="flex justify-between items-center mb-2">
+                <h3 className="font-bold text-slate-900 text-lg">Informasi Pribadi</h3>
+                {!isEditing && (
+                    <Button
+                        variant="outline"
+                        onClick={() => setIsEditing(true)}
+                        className="h-9 px-4 text-xs bg-white hover:bg-slate-50"
+                    >
+                        <Pencil size={14} className="mr-2" /> Edit Data
+                    </Button>
+                )}
+            </div>
+
+            <form onSubmit={handleSubmit((data) => {
+                mutate(data, { onSuccess: () => setIsEditing(false) });
+            })} className="space-y-5">
+
+                <div className="relative">
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">Nama Lengkap</label>
+                    {isEditing ? (
+                        <Input error={errors.name?.message} {...register('name')} />
+                    ) : (
+                        <p className="text-slate-900 font-medium text-lg border-b border-slate-100 pb-2">{profile?.name}</p>
+                    )}
+                </div>
+
+                <div className="relative">
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">Email Address</label>
+                    {isEditing ? (
+                        <Input type="email" error={errors.email?.message} {...register('email')} />
+                    ) : (
+                        <p className="text-slate-900 font-medium text-lg border-b border-slate-100 pb-2">{profile?.email}</p>
+                    )}
+                </div>
+
+                {isEditing && (
+                    <div className="flex gap-3 pt-2 animate-in fade-in slide-in-from-top-2">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => {
+                                reset(profile);
+                                setIsEditing(false);
+                            }}
+                            className="flex-1 bg-white"
+                        >
+                            <X size={16} className="mr-2" /> Batal
+                        </Button>
+                        <Button type="submit" isLoading={isPending} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white">
+                            <Save size={16} className="mr-2" /> Simpan
+                        </Button>
+                    </div>
+                )}
+            </form>
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/profile/components/ProfileForm.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/profile/hooks/useProfile.ts ---
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
+import apiClient from '@/lib/axios';
+import { UserProfile, ProfileInput, PasswordInput } from '../types';
+import { ApiResponse, ApiErrorResponse } from '@/types/api';
+import { parseApiError } from '@/lib/error-handler';
+
+export const useGetProfile = () => useQuery({
+    queryKey: ['profile'],
+    queryFn: async () => {
+        const { data } = await apiClient.get<ApiResponse<UserProfile>>('/auth/profile');
+        return data.data;
+    },
+});
+
+export const useUpdateProfile = () => {
+    const queryClient = useQueryClient();
+    return useMutation<ApiResponse<null>, AxiosError<ApiErrorResponse>, ProfileInput>({
+        mutationFn: async (data) => {
+            const response = await apiClient.put<ApiResponse<null>>('/auth/profile', data);
+            return response.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['profile'] });
+            toast.success('Profil berhasil diperbarui');
+        },
+        onError: (error) => {
+            const message = parseApiError(error);
+            toast.error(message);
+        },
+    });
+};
+
+export const useChangePassword = () => {
+    return useMutation<ApiResponse<null>, AxiosError<ApiErrorResponse>, PasswordInput>({
+        mutationFn: async (data) => {
+            const response = await apiClient.post<ApiResponse<null>>('/auth/change-password', data);
+            return response.data;
+        },
+        onSuccess: () => toast.success('Password berhasil diubah'),
+        onError: (error) => {
+            const message = parseApiError(error);
+            toast.error(message);
+        },
+    });
+};
+--- END FILE: mini-quiz-ambis/src/features/profile/hooks/useProfile.ts ---
+
+--- START FILE: mini-quiz-ambis/src/features/profile/types/index.ts ---
+import { z } from 'zod';
+
+export const profileSchema = z.object({
+    name: z.string().min(3, 'Nama minimal 3 karakter'),
+    email: z.string().email('Email tidak valid'),
+});
+export type ProfileInput = z.infer<typeof profileSchema>;
+
+export const passwordSchema = z.object({
+    old_password: z.string().min(1, 'Password lama wajib diisi'),
+    new_password: z.string().min(8, 'Password baru minimal 8 karakter'),
+});
+export type PasswordInput = z.infer<typeof passwordSchema>;
+
+export interface UserProfile {
+    name: string;
+    email: string;
+}
+--- END FILE: mini-quiz-ambis/src/features/profile/types/index.ts ---
+
+--- START FILE: mini-quiz-ambis/src/features/quiz/components/MobileNavigator.tsx ---
+'use client';
+
+import { X } from 'lucide-react';
+import QuestionNavigator from './QuestionNavigator';
+
+interface Props {
+    isOpen: boolean;
+    onClose: () => void;
+    totalQuestions: number;
+    currentIndex: number;
+    onNavigate: (index: number) => void;
+}
+
+export default function MobileNavigator({ isOpen, onClose, totalQuestions, currentIndex, onNavigate }: Props) {
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 z-50 md:hidden">
+            <div
+                className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm animate-in fade-in"
+                onClick={onClose}
+            />
+
+            <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-xl animate-in slide-in-from-bottom duration-300 max-h-[80vh] flex flex-col">
+                <div className="p-4 border-b flex justify-between items-center">
+                    <h3 className="font-bold text-slate-900">Navigasi Soal</h3>
+                    <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full">
+                        <X size={20} />
+                    </button>
+                </div>
+
+                <div className="p-4 overflow-y-auto">
+                    <QuestionNavigator
+                        totalQuestions={totalQuestions}
+                        currentIndex={currentIndex}
+                        onNavigate={(idx) => {
+                            onNavigate(idx);
+                            onClose();
+                        }}
+                    />
+                </div>
+            </div>
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/quiz/components/MobileNavigator.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/quiz/components/QuestionCard.tsx ---
+'use client';
+
+import { Question } from '../types';
+import { useQuizStore } from '../store/quizStore';
+import { cn } from '@/lib/utils';
+import { CheckCircle2 } from 'lucide-react';
+
+interface Props {
+    question: Question;
+}
+
+export default function QuestionCard({ question }: Props) {
+    const { answers, setAnswer } = useQuizStore();
+    const selected = answers[question.question_number.toString()];
+
+    return (
+        <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-100">
+            <h3 className="text-lg md:text-xl font-medium text-slate-900 mb-6 leading-relaxed">
+                {question.question_text}
+            </h3>
+            <div className="space-y-3">
+                {question.options.map((option) => (
+                    <button
+                        key={option}
+                        onClick={() => setAnswer(question.question_number.toString(), option)}
+                        className={cn(
+                            "w-full text-left p-4 rounded-xl border-2 transition-all flex justify-between items-center group",
+                            selected === option
+                                ? "border-blue-600 bg-blue-50 text-blue-700"
+                                : "border-slate-100 hover:border-slate-300 text-slate-700"
+                        )}
+                    >
+                        <span className="font-medium">{option}</span>
+                        {selected === option && <CheckCircle2 className="w-5 h-5 text-blue-600" />}
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/quiz/components/QuestionCard.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/quiz/components/QuestionNavigator.tsx ---
+'use client';
+
+import { useQuizStore } from '../store/quizStore';
+import { cn } from '@/lib/utils';
+import { Flag, CheckCircle2 } from 'lucide-react';
+
+interface Props {
+    totalQuestions: number;
+    currentIndex: number;
+    onNavigate: (index: number) => void;
+}
+
+export default function QuestionNavigator({ totalQuestions, currentIndex, onNavigate }: Props) {
+    const { answers, flags } = useQuizStore();
+
+    return (
+        <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm h-fit">
+            <h3 className="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wider">Peta Soal</h3>
+
+            <div className="grid grid-cols-5 gap-2">
+                {Array.from({ length: totalQuestions }).map((_, idx) => {
+                    const questionNum = (idx + 1).toString();
+                    const isAnswered = !!answers[questionNum];
+                    const isFlagged = !!flags[questionNum];
+                    const isCurrent = idx === currentIndex;
+
+                    return (
+                        <button
+                            key={idx}
+                            onClick={() => onNavigate(idx)}
+                            className={cn(
+                                "h-10 w-full rounded-lg text-sm font-bold flex items-center justify-center relative transition-all border-2",
+                                isCurrent ? "border-blue-600 ring-2 ring-blue-100 z-10" : "border-transparent",
+                                isFlagged
+                                    ? "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
+                                    : isAnswered
+                                        ? "bg-green-100 text-green-700 hover:bg-green-200"
+                                        : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                            )}
+                        >
+                            {idx + 1}
+                            {isFlagged && (
+                                <div className="absolute -top-1 -right-1">
+                                    <Flag size={10} className="fill-yellow-600 text-yellow-600" />
+                                </div>
+                            )}
+                            {isAnswered && !isFlagged && (
+                                <div className="absolute -top-1 -right-1">
+                                    <CheckCircle2 size={10} className="fill-green-600 text-green-600 bg-white rounded-full" />
+                                </div>
+                            )}
+                        </button>
+                    );
+                })}
+            </div>
+
+            <div className="mt-6 space-y-2 text-xs text-slate-500 font-medium">
+                <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-green-500" /> Sudah Dijawab
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-yellow-500" /> Ragu-ragu
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-slate-300" /> Belum Diisi
+                </div>
+            </div>
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/quiz/components/QuestionNavigator.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/quiz/components/QuizFooter.tsx ---
+'use client';
+
+import { Button } from '@/components/ui/Button';
+import { ArrowLeft, ArrowRight, Send } from 'lucide-react';
+
+interface Props {
+    onPrev: () => void;
+    onNext: () => void;
+    onSubmit: () => void;
+    isFirst: boolean;
+    isLast: boolean;
+    isLoading: boolean;
+    variant?: 'fixed' | 'static';
+}
+
+export default function QuizFooter({
+    onPrev,
+    onNext,
+    onSubmit,
+    isFirst,
+    isLast,
+    isLoading,
+    variant = 'fixed'
+}: Props) {
+
+    if (variant === 'static') {
+        return (
+            <div className="flex justify-between items-center gap-4 mt-6">
+                <Button
+                    variant="outline"
+                    onClick={onPrev}
+                    disabled={isFirst}
+                    className="bg-white border-slate-200 hover:bg-slate-50 text-slate-700 px-6"
+                >
+                    <ArrowLeft size={18} className="mr-2" /> Sebelumnya
+                </Button>
+
+                {isLast ? (
+                    <Button
+                        onClick={onSubmit}
+                        isLoading={isLoading}
+                        className="bg-green-600 hover:bg-green-700 text-white px-8 shadow-lg shadow-green-600/20"
+                    >
+                        Selesai <Send size={18} className="ml-2" />
+                    </Button>
+                ) : (
+                    <Button
+                        onClick={onNext}
+                        className="bg-slate-900 hover:bg-slate-800 text-white px-8 shadow-lg shadow-slate-900/20"
+                    >
+                        Selanjutnya <ArrowRight size={18} className="ml-2" />
+                    </Button>
+                )}
+            </div>
+        );
+    }
+
+    return (
+        <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 p-4 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] safe-area-pb">
+            <div className="flex justify-between items-center gap-3">
+                <Button
+                    variant="outline"
+                    onClick={onPrev}
+                    disabled={isFirst}
+                    className="flex-1 bg-white border-slate-200"
+                >
+                    <ArrowLeft size={18} />
+                </Button>
+
+                {isLast ? (
+                    <Button
+                        onClick={onSubmit}
+                        isLoading={isLoading}
+                        className="flex-2 bg-green-600 hover:bg-green-700 text-white"
+                    >
+                        Selesai <Send size={18} className="ml-2" />
+                    </Button>
+                ) : (
+                    <Button
+                        onClick={onNext}
+                        className="flex-2 bg-slate-900 hover:bg-slate-800 text-white"
+                    >
+                        Lanjut <ArrowRight size={18} className="ml-2" />
+                    </Button>
+                )}
+            </div>
+        </footer>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/quiz/components/QuizFooter.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/quiz/components/QuizHeader.tsx ---
+'use client';
+
+import QuizTimer from './QuizTimer';
+
+interface Props {
+    subtestName: string;
+    currentIndex: number;
+    totalQuestions: number;
+    expiresAt: string;
+    onTimeout: () => void;
+    onOpenMobileNav: () => void;
+}
+
+export default function QuizHeader({
+    subtestName,
+    currentIndex,
+    totalQuestions,
+    expiresAt,
+    onTimeout,
+    onOpenMobileNav
+}: Props) {
+    return (
+        <header className="bg-white border-b px-4 py-3 sticky top-0 z-30 shadow-sm">
+            <div className="max-w-7xl mx-auto flex justify-between items-center">
+                <div className="flex flex-col overflow-hidden mr-4">
+                    <h1 className="font-bold text-slate-900 text-sm md:text-lg truncate">
+                        {subtestName}
+                    </h1>
+                    <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                        <span>Soal {currentIndex + 1} / {totalQuestions}</span>
+                        <span className="hidden md:inline">• Sesi Ujian</span>
+                        <button
+                            onClick={onOpenMobileNav}
+                            className="md:hidden text-blue-600 font-bold ml-2 underline"
+                        >
+                            Lihat Peta Soal
+                        </button>
+                    </div>
+                </div>
+                <QuizTimer expiresAt={expiresAt} onExpire={onTimeout} />
+            </div>
+        </header>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/quiz/components/QuizHeader.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/quiz/components/QuizTimer.tsx ---
+'use client';
+
+import { useEffect, useState, useRef, useCallback } from 'react';
+import { differenceInSeconds } from 'date-fns';
+import { Timer } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+interface Props {
+    expiresAt: string;
+    onExpire: () => void;
+}
+
+export default function QuizTimer({ expiresAt, onExpire }: Props) {
+    const expiredTriggered = useRef(false);
+
+    const calculateTime = useCallback(() => {
+        const now = new Date();
+        const expiry = new Date(expiresAt);
+        const diff = differenceInSeconds(expiry, now);
+        return Math.max(0, diff);
+    }, [expiresAt]);
+
+    const [timeLeft, setTimeLeft] = useState(calculateTime);
+
+    useEffect(() => {
+        if (calculateTime() <= 0 && !expiredTriggered.current) {
+            expiredTriggered.current = true;
+            onExpire();
+            return;
+        }
+
+        const interval = setInterval(() => {
+            const diff = calculateTime();
+            setTimeLeft(diff);
+
+            if (diff <= 0) {
+                clearInterval(interval);
+                if (!expiredTriggered.current) {
+                    expiredTriggered.current = true;
+                    onExpire();
+                }
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [calculateTime, onExpire]);
+
+    const format = (sec: number) => {
+        const m = Math.floor(sec / 60);
+        const s = sec % 60;
+        return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    };
+
+    const isUrgent = timeLeft < 60;
+
+    return (
+        <div className={cn(
+            "flex items-center gap-2 px-4 py-1.5 rounded-lg font-mono font-bold transition-colors",
+            isUrgent ? "bg-red-100 text-red-600 animate-pulse" : "bg-blue-50 text-blue-700"
+        )}>
+            <Timer size={18} />
+            {format(timeLeft)}
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/quiz/components/QuizTimer.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/quiz/components/SubmitModal.tsx ---
+'use client';
+
+import { Button } from '@/components/ui/Button';
+import { AlertTriangle, X, CheckCircle2 } from 'lucide-react';
+import { useQuizStore } from '../store/quizStore';
+
+interface Props {
+    isOpen: boolean;
+    onClose: () => void;
+    onConfirm: () => void;
+    totalQuestions: number;
+    isSubmitting: boolean;
+}
+
+export default function SubmitModal({ isOpen, onClose, onConfirm, totalQuestions, isSubmitting }: Props) {
+    const { answers, flags } = useQuizStore();
+
+    if (!isOpen) return null;
+
+    const answeredCount = Object.keys(answers).length;
+    const flaggedCount = Object.keys(flags).length;
+    const unansweredCount = totalQuestions - answeredCount;
+
+    const isComplete = unansweredCount === 0;
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200">
+
+                <div className="p-6 border-b border-slate-100 flex justify-between items-start">
+                    <div>
+                        <h2 className="text-xl font-bold text-slate-900">Konfirmasi Submit</h2>
+                        <p className="text-sm text-slate-500 mt-1">Cek kembali status pengerjaan Anda.</p>
+                    </div>
+                    <button onClick={onClose} className="text-slate-400 hover:text-slate-600 transition-colors">
+                        <X size={24} />
+                    </button>
+                </div>
+
+                <div className="p-6 space-y-5">
+                    <div className="grid grid-cols-3 gap-3 text-center">
+                        <div className="bg-green-50 p-3 rounded-xl border border-green-100">
+                            <div className="text-2xl font-bold text-green-600">{answeredCount}</div>
+                            <div className="text-xs text-green-700 font-medium mt-1">Terjawab</div>
+                        </div>
+                        <div className="bg-yellow-50 p-3 rounded-xl border border-yellow-100">
+                            <div className="text-2xl font-bold text-yellow-600">{flaggedCount}</div>
+                            <div className="text-xs text-yellow-700 font-medium mt-1">Ragu-ragu</div>
+                        </div>
+                        <div className={`p-3 rounded-xl border ${unansweredCount > 0 ? 'bg-red-50 border-red-100' : 'bg-slate-50 border-slate-100'}`}>
+                            <div className={`text-2xl font-bold ${unansweredCount > 0 ? 'text-red-600' : 'text-slate-600'}`}>
+                                {unansweredCount}
+                            </div>
+                            <div className={`text-xs font-medium mt-1 ${unansweredCount > 0 ? 'text-red-700' : 'text-slate-600'}`}>
+                                Kosong
+                            </div>
+                        </div>
+                    </div>
+
+                    {!isComplete ? (
+                        <div className="bg-red-50 text-red-800 p-4 rounded-xl flex items-start gap-3 border border-red-100">
+                            <AlertTriangle className="shrink-0 mt-0.5 text-red-600" size={20} />
+                            <div className="text-sm">
+                                <p className="font-bold text-red-900">Belum Selesai!</p>
+                                <p className="mt-1 leading-relaxed">
+                                    Anda masih memiliki <b>{unansweredCount} soal</b> yang belum diisi.
+                                    Mohon lengkapi semua jawaban sebelum mengumpulkan.
+                                </p>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-blue-50 text-blue-800 p-4 rounded-xl flex items-start gap-3 border border-blue-100">
+                            <CheckCircle2 className="shrink-0 mt-0.5 text-blue-600" size={20} />
+                            <div className="text-sm">
+                                <p className="font-bold text-blue-900">Siap Dikumpulkan</p>
+                                <p className="mt-1 leading-relaxed">
+                                    Semua soal telah terjawab. Apakah Anda yakin ingin mengakhiri sesi ini?
+                                </p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                <div className="p-6 bg-slate-50 border-t border-slate-100 flex gap-3">
+                    <Button variant="outline" onClick={onClose} className="w-full bg-white hover:bg-slate-100">
+                        {isComplete ? 'Cek Lagi' : 'Lengkapi Jawaban'}
+                    </Button>
+
+                    <Button
+                        onClick={onConfirm}
+                        isLoading={isSubmitting}
+                        disabled={!isComplete}
+                        className={`w-full ${!isComplete ? 'opacity-50 cursor-not-allowed' : 'bg-slate-900 hover:bg-slate-800'}`}
+                    >
+                        {isComplete ? 'Ya, Kumpulkan' : 'Belum Lengkap'}
+                    </Button>
+                </div>
+            </div>
+        </div>
+    );
+}
+--- END FILE: mini-quiz-ambis/src/features/quiz/components/SubmitModal.tsx ---
+
+--- START FILE: mini-quiz-ambis/src/features/quiz/hooks/useQuiz.ts ---
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { AxiosError } from 'axios';
+import apiClient from '@/lib/axios';
+import { Subtest, QuizSession, QuizResult } from '../types';
+import { useQuizStore } from '../store/quizStore';
+import { ApiResponse, ApiErrorResponse } from '@/types/api';
+import { parseApiError } from '@/lib/error-handler';
+
+export const useSubtests = () => useQuery({
+    queryKey: ['subtests'],
+    queryFn: async () => {
+        const { data } = await apiClient.get<ApiResponse<Subtest[]>>('/subtests');
+        return data.data;
+    },
+});
+
+export const useStartQuiz = () => {
+    const router = useRouter();
+    const queryClient = useQueryClient();
+
+    return useMutation<QuizSession, AxiosError<ApiErrorResponse>, string>({
+        mutationFn: async (subtestId) => {
+            const { data } = await apiClient.get<ApiResponse<QuizSession>>(`/quiz/start/${subtestId}`);
+            return data.data;
+        },
+        onSuccess: (data) => {
+            queryClient.setQueryData(['activeSession'], data);
+            router.push('/quiz/session');
+        },
+        onError: (error) => {
+            if (error.response?.status === 409) {
+                toast.info('Sesi aktif ditemukan. Melanjutkan...');
+                router.push('/quiz/session');
+            } else {
+                const msg = parseApiError(error);
+                toast.error(msg);
+            }
+        },
+    });
+};
+
+export const useActiveSession = () => useQuery({
+    queryKey: ['activeSession'],
+    queryFn: async () => {
+        try {
+            const { data } = await apiClient.get<ApiResponse<QuizSession>>('/quiz/active');
+            return data.data;
+        } catch {
+            return null;
+        }
+    },
+    retry: 1,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
+});
+
+export const useSubmitQuiz = () => {
+    const router = useRouter();
+    const queryClient = useQueryClient();
+    const { resetAnswers, markSessionAsFailed, sessionId } = useQuizStore();
+
+    return useMutation<QuizResult, AxiosError<ApiErrorResponse>, Record<string, string>>({
+        mutationFn: async (answers) => {
+            const { data } = await apiClient.post<ApiResponse<QuizResult>>('/quiz/submit', { answers });
+            return data.data;
+        },
+        onSuccess: (res) => {
+            resetAnswers();
+            queryClient.invalidateQueries({ queryKey: ['history'] });
+            queryClient.setQueryData(['activeSession'], null);
+
+            toast.success(`Kuis Selesai! Skor: ${res.score}`);
+            router.replace('/history');
+        },
+        onError: (error) => {
+            if (error.response?.status === 400 || error.response?.status === 404 || error.response?.status === 409) {
+                if (sessionId) {
+                    markSessionAsFailed(sessionId);
+                } else {
+                    resetAnswers();
+                }
+
+                toast.warning('Sesi ditutup (Data tidak valid atau kadaluarsa).');
+                queryClient.setQueryData(['activeSession'], null);
+                router.replace('/history');
+            } else {
+                const msg = parseApiError(error);
+                toast.error(msg);
+            }
+        },
+    });
+};
+--- END FILE: mini-quiz-ambis/src/features/quiz/hooks/useQuiz.ts ---
+
+--- START FILE: mini-quiz-ambis/src/features/quiz/store/quizStore.ts ---
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { STORAGE_KEYS } from '@/lib/utils';
+
+interface QuizState {
+    sessionId: string | null;
+    failedSessionId: string | null;
+    answers: Record<string, string>;
+    flags: Record<string, boolean>;
+    setSessionId: (id: string) => void;
+    markSessionAsFailed: (id: string) => void;
+    setAnswer: (id: string, value: string) => void;
+    toggleFlag: (id: string) => void;
+    resetAnswers: () => void;
+}
+
+export const useQuizStore = create<QuizState>()(
+    persist(
+        (set) => ({
+            sessionId: null,
+            failedSessionId: null,
+            answers: {},
+            flags: {},
+            setSessionId: (id) => set({ sessionId: id, failedSessionId: null }),
+            markSessionAsFailed: (id) => set({ failedSessionId: id, sessionId: null, answers: {}, flags: {} }),
+            setAnswer: (id, value) =>
+                set((state) => ({ answers: { ...state.answers, [id]: value } })),
+            toggleFlag: (id) =>
+                set((state) => {
+                    const newFlags = { ...state.flags };
+                    if (newFlags[id]) delete newFlags[id];
+                    else newFlags[id] = true;
+                    return { flags: newFlags };
+                }),
+            resetAnswers: () => set({ sessionId: null, answers: {}, flags: {} }),
+        }),
+        { name: STORAGE_KEYS.QUIZ_DRAFT }
+    )
+);
+--- END FILE: mini-quiz-ambis/src/features/quiz/store/quizStore.ts ---
+
+--- START FILE: mini-quiz-ambis/src/features/quiz/types/index.ts ---
+export interface Subtest {
+    id: string;
+    title: string;
+    description: string;
+    question_count: number;
+}
+
+export interface Question {
+    question_number: number;
+    question_text: string;
+    options: string[];
+}
+
+export interface QuizSession {
+    session_id: string;
+    subtest_name: string;
+    questions: Question[];
+    expires_at: string;
+}
+
+export interface QuizResult {
+    score: number;
+}
+--- END FILE: mini-quiz-ambis/src/features/quiz/types/index.ts ---
+
+--- START FILE: mini-quiz-ambis/src/lib/axios.ts ---
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import { STORAGE_KEYS } from './utils';
+
+const apiClient = axios.create({
+    baseURL: '/api/proxy',
+    headers: { 'Content-Type': 'application/json' },
+});
+
+apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+    if (typeof window !== 'undefined') {
+        const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
+        if (token) config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+});
+
+apiClient.interceptors.response.use(
+    (response) => response,
+    (error: AxiosError) => {
+        if (error.response?.status === 401 && typeof window !== 'undefined') {
+            const currentPath = window.location.pathname;
+
+            const isAuthPage =
+                currentPath.startsWith('/login') ||
+                currentPath.startsWith('/register') ||
+                currentPath.startsWith('/verify');
+
+            if (!isAuthPage) {
+                localStorage.removeItem(STORAGE_KEYS.TOKEN);
+                window.location.href = '/login';
+            }
+        }
+        return Promise.reject(error);
+    }
+);
+
+export default apiClient;
+--- END FILE: mini-quiz-ambis/src/lib/axios.ts ---
+
+--- START FILE: mini-quiz-ambis/src/lib/error-handler.ts ---
+import { AxiosError } from 'axios';
+import { isObject } from '@/types/api';
+
+export function parseApiError(error: unknown): string {
+    if (error instanceof AxiosError) {
+        if (!error.response) {
+            return 'Tidak dapat terhubung ke server. Periksa koneksi internet Anda.';
+        }
+
+        const status = error.response.status;
+        const data = error.response.data as unknown;
+
+        if (status === 409) return 'Data sudah terdaftar atau konflik.';
+        if (status === 401) return 'Sesi habis atau kredensial salah.';
+        if (status === 500) return 'Terjadi kesalahan internal pada server.';
+
+        if (isObject(data)) {
+            if ('errors' in data && isObject(data.errors)) {
+                const errors = data.errors as Record<string, unknown[]>;
+                const firstField = Object.keys(errors)[0];
+                if (firstField && Array.isArray(errors[firstField]) && errors[firstField].length > 0) {
+                    return String(errors[firstField][0]);
+                }
+            }
+
+            if ('error' in data && typeof data.error === 'string') {
+                return data.error;
+            }
+
+            if ('message' in data && typeof data.message === 'string') {
+                return data.message;
+            }
+
+            if ('message' in data && isObject(data.message)) {
+                const nestedMessage = data.message;
+                if ('message' in nestedMessage && typeof nestedMessage.message === 'string') {
+                    return nestedMessage.message;
+                }
+            }
+        }
+    }
+
+    if (error instanceof Error) return error.message;
+
+    return 'Terjadi kesalahan yang tidak diketahui.';
+}
+--- END FILE: mini-quiz-ambis/src/lib/error-handler.ts ---
+
+--- START FILE: mini-quiz-ambis/src/lib/utils.ts ---
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs));
+}
+
+export const STORAGE_KEYS = {
+    TOKEN: 'mq_access_token',
+    QUIZ_DRAFT: 'mq_quiz_draft',
+};
+--- END FILE: mini-quiz-ambis/src/lib/utils.ts ---
+
+--- START FILE: mini-quiz-ambis/src/types/api.ts ---
+export interface ApiResponse<T> {
+    success: boolean;
+    data: T;
+    message?: string;
+}
+
+export type ApiErrorResponse =
+    | { error: string }
+    | { message: string }
+    | { message: { message: string; code?: number } }
+    | { errors: Record<string, string[]> };
+
+export function isObject(value: unknown): value is Record<string, unknown> {
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+--- END FILE: mini-quiz-ambis/src/types/api.ts ---
+
+--- START FILE: mini-quiz-ambis/tsconfig.json ---
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": ["node_modules"]
+}
+
+--- END FILE: mini-quiz-ambis/tsconfig.json ---
+
