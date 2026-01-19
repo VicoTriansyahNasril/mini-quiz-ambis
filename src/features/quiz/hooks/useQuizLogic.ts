@@ -1,5 +1,3 @@
-// [DOCS] Logic Controller utama untuk halaman pengerjaan kuis.
-// Memisahkan logika bisnis (timer, navigasi, submit) dari tampilan UI.
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useActiveSession, useSubmitQuiz } from './useQuiz';
@@ -28,21 +26,20 @@ export const useQuizLogic = () => {
     const [currentTime, setCurrentTime] = useState<number | null>(null);
     const isSubmittingRef = useRef(false);
 
-    // [DOCS] Mengambil waktu sekarang di client untuk validasi expired
+    // [DOCS] Mengambil waktu sekarang di client untuk validasi expired real-time.
     useEffect(() => {
         const timer = setTimeout(() => setCurrentTime(Date.now()), 0);
         return () => clearTimeout(timer);
     }, []);
 
-    // [DOCS] Deteksi jika ID sesi dari server berbeda dengan di storage lokal
     const isSessionMismatch = session?.session_id && storedSessionId !== session.session_id;
-    // [DOCS] Deteksi jika waktu sudah habis saat halaman dimuat
     const isExpiredOnLoad = session && currentTime !== null
         ? new Date(session.expires_at).getTime() < currentTime
         : false;
     const isServerError = error instanceof AxiosError && error.response && error.response.status >= 500;
 
-    // [DOCS] Sinkronisasi ID sesi jika terjadi mismatch
+    // [DOCS] Sinkronisasi ID sesi server dengan local storage.
+    // Jika user berpindah sesi (misal dari Matematika ke Logika), reset jawaban lokal.
     useEffect(() => {
         if (isSessionMismatch && session) {
             resetAnswers();
@@ -50,7 +47,8 @@ export const useQuizLogic = () => {
         }
     }, [isSessionMismatch, session, resetAnswers, setSessionId]);
 
-    // [DOCS] Redirect ke dashboard jika tidak ada sesi aktif
+    // [DOCS] Redirect ke dashboard jika tidak ada sesi aktif yang ditemukan.
+    // Mencegah akses langsung ke halaman kuis tanpa melalui proses Start.
     useEffect(() => {
         if (!isLoading && !session && !isError) {
             if (!isSubmittingRef.current) {
@@ -61,21 +59,23 @@ export const useQuizLogic = () => {
         }
     }, [isLoading, session, isError, resetAnswers, router]);
 
-    // [DOCS] Fungsi eksekusi submit jawaban
-    const executeSubmit = useCallback((forceSubmit = false) => {
+    // [DOCS] Logika utama pengiriman jawaban ke server.
+    // Fungsi ini menyusun payload jawaban user. Jika ada soal yang belum dijawab,
+    // akan otomatis diisi string kosong ("") agar sesuai format API backend.
+    const executeSubmit = useCallback(() => {
         if (isSubmittingRef.current) return;
+        if (!session || !session.questions) return;
 
-        const totalQuestions = session?.questions?.length || 0;
-        const answeredCount = Object.keys(answers).length;
+        // [DOCS] Membangun payload lengkap: { "1": "A", "2": "", "3": "B" }
+        const payload: Record<string, string> = {};
 
-        // [DOCS] Cegah submit jika jawaban belum lengkap, kecuali dipaksa (timer habis)
-        if (!forceSubmit && answeredCount < totalQuestions) {
-            toast.error(`Lengkapi ${totalQuestions - answeredCount} soal lagi sebelum mengumpulkan.`);
-            return;
-        }
+        session.questions.forEach((q) => {
+            const qNum = q.question_number.toString();
+            // Gunakan jawaban user jika ada, atau string kosong jika belum diisi.
+            payload[qNum] = answers[qNum] || "";
+        });
 
         isSubmittingRef.current = true;
-        const payload = Object.keys(answers).length === 0 ? { "0": "" } : answers;
 
         submit(payload, {
             onSuccess: () => {
@@ -85,6 +85,7 @@ export const useQuizLogic = () => {
                 isSubmittingRef.current = false;
                 setIsModalOpen(false);
 
+                // [DOCS] Handle jika sesi ternyata sudah kadaluarsa/tidak valid di sisi server.
                 if (err.response?.status === 400 || err.response?.status === 404 || err.response?.status === 409) {
                     toast.warning("Sesi telah berakhir atau data tidak valid.");
                     resetAnswers();
@@ -94,18 +95,19 @@ export const useQuizLogic = () => {
         });
     }, [answers, session, submit, router, resetAnswers]);
 
-    // [DOCS] Handler otomatis saat timer habis
+    // [DOCS] Handler otomatis saat timer habis.
+    // Langsung memanggil executeSubmit tanpa interaksi user.
     const handleTimeout = useCallback(() => {
         toast.warning('Waktu habis! Mengirim jawaban...');
         setIsModalOpen(false);
-        executeSubmit(true);
+        executeSubmit();
     }, [executeSubmit]);
 
-    // [DOCS] Trigger submit otomatis jika terdeteksi expired saat load
+    // [DOCS] Trigger submit otomatis jika saat halaman dimuat sesi sudah expired.
     useEffect(() => {
         if (isExpiredOnLoad && !isSubmittingRef.current && session) {
             toast.error("Waktu sesi sudah habis. Menutup sesi...");
-            executeSubmit(true);
+            executeSubmit();
         }
     }, [isExpiredOnLoad, executeSubmit, session]);
 
@@ -126,7 +128,7 @@ export const useQuizLogic = () => {
         setIsMobileNavOpen,
         toggleFlag,
         setAnswer,
-        handleManualSubmit: () => executeSubmit(false),
+        handleManualSubmit: () => executeSubmit(),
         handleTimeout,
         answers,
         flags

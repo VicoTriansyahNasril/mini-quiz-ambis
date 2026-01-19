@@ -1,7 +1,8 @@
 'use client';
 
-// [DOCS] Modal konfirmasi sebelum submit kuis.
-// Menampilkan ringkasan: Terjawab, Ragu-ragu, dan Kosong.
+// [DOCS] Modal konfirmasi submit.
+// Memberikan ringkasan jumlah soal terjawab, ragu-ragu, dan kosong.
+// Mengizinkan user untuk tetap submit meskipun masih ada soal yang belum diisi.
 import { Button } from '@/components/ui/Button';
 import { AlertTriangle, X, CheckCircle2 } from 'lucide-react';
 import { useQuizStore } from '../store/quizStore';
@@ -19,11 +20,11 @@ export default function SubmitModal({ isOpen, onClose, onConfirm, totalQuestions
 
     if (!isOpen) return null;
 
-    // [DOCS] Hitung statistik pengerjaan saat ini.
     const answeredCount = Object.keys(answers).length;
     const flaggedCount = Object.keys(flags).length;
     const unansweredCount = totalQuestions - answeredCount;
 
+    // [DOCS] Cek apakah semua soal sudah terjawab.
     const isComplete = unansweredCount === 0;
 
     return (
@@ -41,6 +42,7 @@ export default function SubmitModal({ isOpen, onClose, onConfirm, totalQuestions
                 </div>
 
                 <div className="p-6 space-y-5">
+                    {/* [DOCS] Grid statistik singkat */}
                     <div className="grid grid-cols-3 gap-3 text-center">
                         <div className="bg-green-50 p-3 rounded-xl border border-green-100">
                             <div className="text-2xl font-bold text-green-600">{answeredCount}</div>
@@ -60,15 +62,14 @@ export default function SubmitModal({ isOpen, onClose, onConfirm, totalQuestions
                         </div>
                     </div>
 
-                    {/* [DOCS] Tampilkan peringatan jika masih ada soal kosong */}
+                    {/* [DOCS] Tampilkan peringatan visual jika belum lengkap, tapi tidak memblokir aksi. */}
                     {!isComplete ? (
-                        <div className="bg-red-50 text-red-800 p-4 rounded-xl flex items-start gap-3 border border-red-100">
-                            <AlertTriangle className="shrink-0 mt-0.5 text-red-600" size={20} />
+                        <div className="bg-amber-50 text-amber-800 p-4 rounded-xl flex items-start gap-3 border border-amber-100">
+                            <AlertTriangle className="shrink-0 mt-0.5 text-amber-600" size={20} />
                             <div className="text-sm">
-                                <p className="font-bold text-red-900">Belum Selesai!</p>
+                                <p className="font-bold text-amber-900">Jawaban Belum Lengkap</p>
                                 <p className="mt-1 leading-relaxed">
-                                    Anda masih memiliki <b>{unansweredCount} soal</b> yang belum diisi.
-                                    Mohon lengkapi semua jawaban sebelum mengumpulkan.
+                                    Masih ada <b>{unansweredCount} soal kosong</b>. Soal kosong akan dianggap salah (nilai 0). Yakin mau kumpulkan?
                                 </p>
                             </div>
                         </div>
@@ -87,17 +88,17 @@ export default function SubmitModal({ isOpen, onClose, onConfirm, totalQuestions
 
                 <div className="p-6 bg-slate-50 border-t border-slate-100 flex gap-3">
                     <Button variant="outline" onClick={onClose} className="w-full bg-white hover:bg-slate-100">
-                        {isComplete ? 'Cek Lagi' : 'Lengkapi Jawaban'}
+                        Periksa Lagi
                     </Button>
 
                     <Button
                         onClick={onConfirm}
                         isLoading={isSubmitting}
-                        // [DOCS] Disable tombol submit jika belum lengkap (requirement: force completion)
-                        disabled={!isComplete}
-                        className={`w-full ${!isComplete ? 'opacity-50 cursor-not-allowed' : 'bg-slate-900 hover:bg-slate-800'}`}
+                        // [DOCS] Ubah warna tombol menjadi merah (danger) jika belum lengkap untuk memberi awareness.
+                        variant={!isComplete ? 'danger' : 'primary'}
+                        className="w-full"
                     >
-                        {isComplete ? 'Ya, Kumpulkan' : 'Belum Lengkap'}
+                        {isComplete ? 'Ya, Kumpulkan' : 'Kumpulkan Saja'}
                     </Button>
                 </div>
             </div>

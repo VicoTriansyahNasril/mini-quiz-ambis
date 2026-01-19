@@ -1,4 +1,3 @@
-// [DOCS] Hook ini berisi kumpulan fungsi React Query untuk berinteraksi dengan API Quiz.
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -9,7 +8,7 @@ import { useQuizStore } from '../store/quizStore';
 import { ApiResponse, ApiErrorResponse } from '@/types/api';
 import { parseApiError } from '@/lib/error-handler';
 
-// [DOCS] Fetch daftar subtest yang tersedia untuk ditampilkan di dashboard.
+// [DOCS] Hook: Mengambil daftar kategori kuis (subtests) dari server.
 export const useSubtests = () => useQuery({
     queryKey: ['subtests'],
     queryFn: async () => {
@@ -18,7 +17,8 @@ export const useSubtests = () => useQuery({
     },
 });
 
-// [DOCS] Melakukan request untuk memulai sesi kuis baru.
+// [DOCS] Hook: Memulai sesi kuis baru.
+// Menangani error 409 (Conflict) jika user mencoba start saat masih ada sesi aktif.
 export const useStartQuiz = () => {
     const router = useRouter();
     const queryClient = useQueryClient();
@@ -29,12 +29,10 @@ export const useStartQuiz = () => {
             return data.data;
         },
         onSuccess: (data) => {
-            // [DOCS] Simpan data sesi ke cache 'activeSession' agar bisa langsung dibaca hook lain.
             queryClient.setQueryData(['activeSession'], data);
             router.push('/quiz/session');
         },
         onError: (error) => {
-            // [DOCS] Handle 409: Jika user sudah punya sesi aktif, tetap arahkan ke halaman sesi (Resume).
             if (error.response?.status === 409) {
                 toast.info('Sesi aktif ditemukan. Melanjutkan...');
                 router.push('/quiz/session');
@@ -46,7 +44,8 @@ export const useStartQuiz = () => {
     });
 };
 
-// [DOCS] Mengecek apakah user memiliki sesi yang sedang berjalan (untuk fitur Resume).
+// [DOCS] Hook: Mengecek status sesi aktif saat ini.
+// Digunakan untuk fitur Resume Capability.
 export const useActiveSession = () => useQuery({
     queryKey: ['activeSession'],
     queryFn: async () => {
@@ -54,7 +53,7 @@ export const useActiveSession = () => useQuery({
             const { data } = await apiClient.get<ApiResponse<QuizSession>>('/quiz/active');
             return data.data;
         } catch {
-            return null; // [DOCS] Tidak ada sesi aktif
+            return null;
         }
     },
     retry: 1,
@@ -62,7 +61,9 @@ export const useActiveSession = () => useQuery({
     refetchOnWindowFocus: true,
 });
 
-// [DOCS] Mengirim jawaban ke server untuk dinilai.
+// [DOCS] Hook: Mengirim jawaban kuis ke server.
+// Menerima payload berupa map jawaban { "1": "A", "2": "" }.
+// Menangani skenario error jika sesi sudah kadaluarsa (400/404/409) saat submit.
 export const useSubmitQuiz = () => {
     const router = useRouter();
     const queryClient = useQueryClient();
@@ -74,7 +75,6 @@ export const useSubmitQuiz = () => {
             return data.data;
         },
         onSuccess: (res) => {
-            // [DOCS] Bersihkan draft lokal dan refresh data riwayat.
             resetAnswers();
             queryClient.invalidateQueries({ queryKey: ['history'] });
             queryClient.setQueryData(['activeSession'], null);
@@ -83,9 +83,8 @@ export const useSubmitQuiz = () => {
             router.replace('/history');
         },
         onError: (error) => {
-            // [DOCS] Handle error 400/404/409: Sesi expired atau tidak valid di server.
-            // Memaksa client untuk reset state agar tidak terjebak di halaman kuis.
             if (error.response?.status === 400 || error.response?.status === 404 || error.response?.status === 409) {
+                // [DOCS] Jika sesi error dari server, bersihkan state lokal agar user tidak stuck.
                 if (sessionId) {
                     markSessionAsFailed(sessionId);
                 } else {
