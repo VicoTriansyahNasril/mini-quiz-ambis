@@ -4,6 +4,16 @@
 
 Project ini dikembangkan menggunakan ekosistem **Next.js 15 (App Router)** terbaru dengan penerapan **Clean Code** dan **Feature-Based Architecture**.
 
+---
+
+## 🌐 Live Demo
+
+Aplikasi telah dideploy dan dapat diakses melalui link berikut:
+
+👉 **https://mini-quiz-ambis.vercel.app/**
+
+---
+
 ## 🚀 Tech Stack
 
 Project ini dibangun menggunakan teknologi modern yang dipilih berdasarkan efisiensi dan performa:
