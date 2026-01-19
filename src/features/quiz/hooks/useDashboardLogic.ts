@@ -30,14 +30,13 @@ export const useDashboardLogic = () => {
         if (!activeSession?.questions) return;
 
         const toastId = toast.loading("Membersihkan sesi...");
-        const dummyAnswers: Record<string, string> = {};
+        const cleanAnswers: Record<string, string> = {};
 
         activeSession.questions.forEach((q) => {
-            const firstOption = q.options && q.options.length > 0 ? q.options[0] : "A";
-            dummyAnswers[q.question_number] = firstOption;
+            cleanAnswers[q.question_number] = "";
         });
 
-        submitQuiz(dummyAnswers, {
+        submitQuiz(cleanAnswers, {
             onSuccess: () => {
                 toast.dismiss(toastId);
                 resetAnswers();

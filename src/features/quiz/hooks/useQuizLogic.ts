@@ -54,19 +54,18 @@ export const useQuizLogic = () => {
         }
     }, [isLoading, session, isError, resetAnswers, router]);
 
-    const executeSubmit = useCallback((forceSubmit = false) => {
+    const executeSubmit = useCallback(() => {
         if (isSubmittingRef.current) return;
+        if (!session || !session.questions) return;
 
-        const totalQuestions = session?.questions?.length || 0;
-        const answeredCount = Object.keys(answers).length;
+        const payload: Record<string, string> = {};
 
-        if (!forceSubmit && answeredCount < totalQuestions) {
-            toast.error(`Lengkapi ${totalQuestions - answeredCount} soal lagi sebelum mengumpulkan.`);
-            return;
-        }
+        session.questions.forEach((q) => {
+            const qNum = q.question_number.toString();
+            payload[qNum] = answers[qNum] || "";
+        });
 
         isSubmittingRef.current = true;
-        const payload = Object.keys(answers).length === 0 ? { "0": "" } : answers;
 
         submit(payload, {
             onSuccess: () => {
@@ -88,18 +87,17 @@ export const useQuizLogic = () => {
     const handleTimeout = useCallback(() => {
         toast.warning('Waktu habis! Mengirim jawaban...');
         setIsModalOpen(false);
-        executeSubmit(true);
+        executeSubmit();
     }, [executeSubmit]);
 
     useEffect(() => {
         if (isExpiredOnLoad && !isSubmittingRef.current && session) {
             toast.error("Waktu sesi sudah habis. Menutup sesi...");
-            executeSubmit(true);
+            executeSubmit();
         }
     }, [isExpiredOnLoad, executeSubmit, session]);
 
     return {
-        // Data
         session,
         isLoading,
         isError,
@@ -108,19 +106,15 @@ export const useQuizLogic = () => {
         isExpiredOnLoad,
         currentTime,
         isSubmitting,
-
-        // State UI
         index,
         setIndex,
         isModalOpen,
         setIsModalOpen,
         isMobileNavOpen,
         setIsMobileNavOpen,
-
-        // Actions
         toggleFlag,
         setAnswer,
-        handleManualSubmit: () => executeSubmit(false),
+        handleManualSubmit: () => executeSubmit(),
         handleTimeout,
         answers,
         flags

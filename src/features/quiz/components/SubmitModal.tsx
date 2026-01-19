@@ -58,13 +58,12 @@ export default function SubmitModal({ isOpen, onClose, onConfirm, totalQuestions
                     </div>
 
                     {!isComplete ? (
-                        <div className="bg-red-50 text-red-800 p-4 rounded-xl flex items-start gap-3 border border-red-100">
-                            <AlertTriangle className="shrink-0 mt-0.5 text-red-600" size={20} />
+                        <div className="bg-amber-50 text-amber-800 p-4 rounded-xl flex items-start gap-3 border border-amber-100">
+                            <AlertTriangle className="shrink-0 mt-0.5 text-amber-600" size={20} />
                             <div className="text-sm">
-                                <p className="font-bold text-red-900">Belum Selesai!</p>
+                                <p className="font-bold text-amber-900">Jawaban Belum Lengkap</p>
                                 <p className="mt-1 leading-relaxed">
-                                    Anda masih memiliki <b>{unansweredCount} soal</b> yang belum diisi.
-                                    Mohon lengkapi semua jawaban sebelum mengumpulkan.
+                                    Masih ada <b>{unansweredCount} soal kosong</b>. Soal kosong akan dianggap salah (nilai 0). Yakin mau kumpulkan?
                                 </p>
                             </div>
                         </div>
@@ -83,16 +82,16 @@ export default function SubmitModal({ isOpen, onClose, onConfirm, totalQuestions
 
                 <div className="p-6 bg-slate-50 border-t border-slate-100 flex gap-3">
                     <Button variant="outline" onClick={onClose} className="w-full bg-white hover:bg-slate-100">
-                        {isComplete ? 'Cek Lagi' : 'Lengkapi Jawaban'}
+                        Periksa Lagi
                     </Button>
 
                     <Button
                         onClick={onConfirm}
                         isLoading={isSubmitting}
-                        disabled={!isComplete}
-                        className={`w-full ${!isComplete ? 'opacity-50 cursor-not-allowed' : 'bg-slate-900 hover:bg-slate-800'}`}
+                        variant={!isComplete ? 'danger' : 'primary'}
+                        className="w-full"
                     >
-                        {isComplete ? 'Ya, Kumpulkan' : 'Belum Lengkap'}
+                        {isComplete ? 'Ya, Kumpulkan' : 'Kumpulkan Saja'}
                     </Button>
                 </div>
             </div>
