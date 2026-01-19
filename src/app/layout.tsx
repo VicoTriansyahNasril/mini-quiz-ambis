@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Mini Quiz Ambis',
   description: 'High Performance Quiz Platform',
+  icons: {
+    icon: '/Logo.png',
+  },
 };
 
 export default function RootLayout({

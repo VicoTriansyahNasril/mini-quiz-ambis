@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
-import { Hexagon } from 'lucide-react';
+import Image from 'next/image';
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
     return (
@@ -9,10 +9,16 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
                 <div className="text-center">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2.5 group transition-opacity hover:opacity-90"
+                        className="inline-flex flex-col items-center gap-4 group transition-opacity hover:opacity-90"
                     >
-                        <div className="bg-blue-600 p-2.5 rounded-xl text-white shadow-md shadow-blue-600/10 transition-transform duration-300 group-hover:scale-105">
-                            <Hexagon size={28} strokeWidth={2.5} />
+                        <div className="relative w-20 h-20 transition-transform duration-300 group-hover:scale-105 drop-shadow-sm">
+                            <Image
+                                src="/Logo.png"
+                                alt="Logo Mini Quiz"
+                                fill
+                                className="object-contain"
+                                priority
+                            />
                         </div>
                         <span className="text-3xl font-bold text-slate-900 tracking-tight">
                             Mini Quiz
