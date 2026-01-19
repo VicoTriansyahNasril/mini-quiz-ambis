@@ -5,21 +5,16 @@ import ProfileForm from '@/features/profile/components/ProfileForm';
 import ChangePasswordForm from '@/features/profile/components/ChangePasswordForm';
 import { User, Lock, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { STORAGE_KEYS } from '@/lib/utils';
-import { useQuizStore } from '@/features/quiz/store/quizStore';
-import { useRouter } from 'next/navigation';
+import { useLogout } from '@/features/auth/hooks/useLogout';
 import LogoutModal from '@/components/ui/LogoutModal';
 
 export default function ProfilePage() {
-    const router = useRouter();
-    const { resetAnswers } = useQuizStore();
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+    const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
     const handleLogoutConfirm = () => {
-        localStorage.removeItem(STORAGE_KEYS.TOKEN);
-        resetAnswers();
+        logout();
         setIsLogoutModalOpen(false);
-        router.replace('/login');
     };
 
     return (
@@ -64,8 +59,10 @@ export default function ProfilePage() {
                         variant="ghost"
                         onClick={() => setIsLogoutModalOpen(true)}
                         className="text-red-500 hover:text-red-600 hover:bg-red-50 px-8 py-3 h-auto"
+                        disabled={isLoggingOut}
                     >
-                        <LogOut size={18} className="mr-2" /> Keluar dari Aplikasi
+                        {isLoggingOut ? 'Sedang Keluar...' : 'Keluar dari Aplikasi'}
+                        {!isLoggingOut && <LogOut size={18} className="ml-2" />}
                     </Button>
                 </div>
             </div>
